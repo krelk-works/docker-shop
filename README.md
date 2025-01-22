@@ -20,6 +20,10 @@ Para parar los servicios de docker asociados a nuestro proyecto debemos abrir un
 
     docker exec -it laravel sh
 
+## LOGS
+
+    docker logs -f --tail 100 laravel
+
 ## En caso de fallo de permisos en la carpeta
 
     sudo chmod 777 -R shop
