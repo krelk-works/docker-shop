@@ -20,6 +20,10 @@ Para parar los servicios de docker asociados a nuestro proyecto debemos abrir un
 
     docker exec -it laravel sh
 
+## En caso de fallo de permisos en la carpeta
+
+    sudo chmod 777 -R shop
+
 ## Carpeta **shop**
 
 En esta carpeta encontraremos todos los archivos php/html que usaremos en el proyecto.
