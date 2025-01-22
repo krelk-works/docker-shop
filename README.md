@@ -6,9 +6,15 @@ Este es un proyecto realizado con laravel y docker.
 
 Para iniciar los servicios **docker** asociados al proyecto debemos abrir una terminal o línea de comandos en el directorio del repositorio e insertar el siguiente **comando**:
 
+>Windows:
+
     docker-compose up -d
 
- Este comando **podría tardar varios minutos** dependiendo de tu equipo y sus características.
+>Linux:
+
+    ./starter.sh
+
+Este comando **podría tardar varios minutos** dependiendo de tu equipo y sus características.
 
 ## Parar servicios
 
