@@ -17,6 +17,10 @@ Para parar los servicios de docker asociados a nuestro proyecto debemos abrir un
 
     docker-compose down
 
+## Acceder mediante terminal
+
+    docker exec -it laravel sh
+
 ## Carpeta **shop**
 
 En esta carpeta encontraremos todos los archivos php/html que usaremos en el proyecto.
