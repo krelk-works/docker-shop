@@ -10,7 +10,7 @@ Para iniciar los servicios **docker** asociados al proyecto debemos abrir una te
 
     docker-compose up -d
 
->Linux:
+>Linux (sudoer):
 
     ./starter.sh
 
