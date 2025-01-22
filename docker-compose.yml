@@ -14,7 +14,7 @@ services:
       - mariadb_data:/bitnami/mariadb
 
   laravel:
-    image: bitnami/laravel:latest
+    image: bitnami/laravel:11.6.0
     container_name: laravel
     depends_on:
       - mariadb
