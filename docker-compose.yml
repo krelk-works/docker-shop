@@ -10,6 +10,6 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=u411677469_shop
       - DB_DATABASE=u411677469_proyecto2
-      - DB_PASSWORD=L@p1n3d4
+      - DB_PASSWORD="LaPineda2025."
     volumes:
       - ./shop:/app # Si no usas SELinux, quita `:z`
