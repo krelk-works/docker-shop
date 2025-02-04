@@ -21,7 +21,6 @@ class CategoriaController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-
     {
         return view('categorias.FormularioCategoria');
         //return view('FormularioCategoria');
@@ -33,7 +32,8 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         //
-        echo "Guardado";
+        echo "Olga te lo juro que se ha Guardado";
+        // return view('principal2');
     }
 
     /**

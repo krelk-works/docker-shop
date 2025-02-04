@@ -9,6 +9,7 @@
     <h1>Formulario</h1>
 
     <form action="{{route('categoria.store')}}" method="POST">
+        @csrf
         <label for="nombre">Nombre</label>
         <input type="text" name="nombre" id="nombre">
 
