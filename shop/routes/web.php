@@ -1,16 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ShoeController;
 
-//incluir controlador
-use App\Http\Controllers\CategoriaController;
+Route::get('/altaCategoria', [CategoryController::class, 'create'])->name('altaCategoria');
+
+Route::get('/altaCalzado', [ShoeController::class, 'create'])->name('altaCalzado');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::resources([
-    'categoria'=> CategoriaController::class
+    'category' => CategoryController::class,
+    'shoe' => ShoeController::class,
 ]);
-
-

@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CategoriaController extends Controller
+class ColorController extends Controller
 {
-    public function mostrarFormularioCategoria(){
-        return view('categorias.FormularioCategoria');
-    }
     /**
      * Display a listing of the resource.
      */
@@ -22,8 +19,7 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return view('categorias.FormularioCategoria');
-        //return view('FormularioCategoria');
+        //
     }
 
     /**
@@ -32,8 +28,6 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         //
-        echo "Olga te lo juro que se ha Guardado";
-        // return view('principal2');
     }
 
     /**
