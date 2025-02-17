@@ -20,3 +20,6 @@ Route::resources([
     'category' => CategoryController::class,
     'shoe' => ShoeController::class,
 ]);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
