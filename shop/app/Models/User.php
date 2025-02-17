@@ -12,6 +12,8 @@ class User extends Authenticatable
 
     protected $table = "users";
 
+    protected $fillable = ['name', 'email', 'password'];
+
     // Evitar que estos datos se serialicen en las respuestas JSON
     protected $hidden = [
         'password',
