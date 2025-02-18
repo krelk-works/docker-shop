@@ -16,6 +16,10 @@ Route::get('/loginPrueba', function () {
     return view('loginPrueba');
 });
 
+Route::get('/navbar', function () {
+    return view('navbar');
+});
+
 
 Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
 
