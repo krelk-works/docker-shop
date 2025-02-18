@@ -16,6 +16,10 @@ Route::get('/loginPrueba', function () {
     return view('loginPrueba');
 });
 
+Route::get('/navbar', function () {
+    return view('navbar');
+});
+
 
 Route::resources([
     'category' => CategoryController::class,
