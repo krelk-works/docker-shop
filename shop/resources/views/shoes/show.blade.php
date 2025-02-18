@@ -6,19 +6,18 @@
 
     <!-- Sección de imágenes (vacías por ahora) -->
     <div class="mb-4">
-        <h4>Imágenes del Producto</h4>
-        <div style="width: 200px; height: 200px; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center;">
+        <div style="width: 500px; height: 200px; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center;">
             <span>Sin imagen</span>
         </div>
     </div>
 
     <!-- Descripción -->
-    <p><strong>Descripción:</strong> {{ $producto->description }}</p>
+    <p><strong>Referéncia del Producto:</strong> {{ $producto->id }}</p>
     <p><strong>Fecha de Creación:</strong> {{ $producto->created_at }}</p>
 
     <!-- Botones para Editar y Desactivar -->
     <div class="mb-4">
-        <a href="#" class="btn btn-warning">Editar Producto</a>
+        <a href="#" class="btn btn-secondary">Editar Producto</a>
         <a href="#" class="btn btn-danger">Desactivar Producto</a>
     </div>
 

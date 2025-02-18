@@ -61,9 +61,21 @@ class ShoeController extends Controller
 
         // Simular tallas y stock
         $tallas = [
+            ['size' => '36', 'stock' => 5],
+            ['size' => '37', 'stock' => 5],
             ['size' => '38', 'stock' => 5],
             ['size' => '39', 'stock' => 3],
             ['size' => '40', 'stock' => 2],
+            ['size' => '41', 'stock' => 5],
+            ['size' => '42', 'stock' => 3],
+            ['size' => '43', 'stock' => 2],
+            ['size' => '44', 'stock' => 2],
+            ['size' => '45', 'stock' => 1],
+            ['size' => '46', 'stock' => 0],
+            ['size' => '47', 'stock' => 0],
+            ['size' => '48', 'stock' => 0],
+
+
         ];
 
     // Pasar el producto y las tallas a la vista
