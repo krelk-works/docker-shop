@@ -14,21 +14,26 @@
         .navbar {
             background-color:rgb(0, 127, 253);
         }
+
+        .navbar .container {
+            width: 100% !important;
+            background: red;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-light">
     <div class="container">
-        <div class="row">
-            <div class="col">
+        <div class="row row-cols-12">
+            <div class="col-3">
                 <a class="navbar-brand" href="#">
                     <img src="{{asset('img/logo.png') }}" class="d-inline-block align-top" alt="">
                 </a>
             </div>
-            <div class="col-5">
+            <div class="col-6">
             2 of 3 (wider)
             </div>
-            <div class="col">
+            <div class="col-3">
             3 of 3
             </div>
         </div>
