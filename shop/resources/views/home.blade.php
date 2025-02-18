@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     
-  <!-- Sección de últimos productos -->
+<!-- Sección de últimos productos -->
 <h2>Últimos Productos</h2>
 <table class="table table-striped">
     <thead>
@@ -28,10 +28,9 @@
         @endforeach
     </tbody>
 </table>
+
 <br>
 <h2>Últimos Pedidos</h2>
-
-
 
 </div>
 @endsection

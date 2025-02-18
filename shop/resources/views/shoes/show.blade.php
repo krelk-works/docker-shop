@@ -5,11 +5,49 @@
     <h2>Detalles del Producto: {{ $producto->name }}</h2>
 
     <!-- Sección de imágenes (vacías por ahora) -->
-    <div class="mb-4">
-        <div style="width: 500px; height: 200px; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center;">
-            <span>Sin imagen</span>
-        </div>
+   
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{{asset('img/nike.png') }}" class="d-block w-100 img-fluid" alt="Imagen 1">
     </div>
+    <div class="carousel-item">
+      <img src="{{asset('img/nike.png') }}" class="d-block w-100 img-fluid" alt="Imagen 2">
+    </div>
+    <div class="carousel-item">
+      <img src="{{asset('img/nike.png') }}" class="d-block w-100 img-fluid" alt="Imagen 3">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<style>
+  #carouselExampleIndicators {
+    max-width: 80%; /* Puedes ajustar este valor para cambiar el tamaño general del carrusel */
+    margin: 0 auto; /* Centra el carrusel */
+  }
+
+  .carousel-inner {
+    height: 400px; /* Ajusta la altura según tus necesidades */
+  }
+
+  .carousel-item img {
+    object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+    height: 100%;
+  }
+</style>
 
     <!-- Descripción -->
     <p><strong>Referéncia del Producto:</strong> {{ $producto->id }}</p>
