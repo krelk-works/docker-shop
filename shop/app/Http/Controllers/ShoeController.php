@@ -56,6 +56,18 @@ class ShoeController extends Controller
     public function show(string $id)
     {
         //
+        // Obtener el producto por su ID
+        $producto = Shoe::findOrFail($id);
+
+        // Simular tallas y stock
+        $tallas = [
+            ['size' => '38', 'stock' => 5],
+            ['size' => '39', 'stock' => 3],
+            ['size' => '40', 'stock' => 2],
+        ];
+
+    // Pasar el producto y las tallas a la vista
+        return view('shoes.show', compact('producto', 'tallas'));
     }
 
     /**
