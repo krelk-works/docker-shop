@@ -17,6 +17,10 @@ Route::get('/loginPrueba', function () {
 });
 
 
+Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
+
+
+
 Route::resources([
     'category' => CategoryController::class,
     'shoe' => ShoeController::class,
