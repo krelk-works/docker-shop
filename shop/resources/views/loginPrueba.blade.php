@@ -23,9 +23,15 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        .logo{
+         
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
         .logo img {
-            max-width: 100px;
-            margin-bottom: 20px;
+            max-width: 200px;
+            margin-bottom: 16px;
+            margin-top: 16px;
         }
         .login-container input {
             border-radius: 8px;
@@ -46,13 +52,13 @@
 <body>
     <div class="login-container">
         <div class="logo">
-            <img src="URL_DE_TU_LOGO" alt="Moon Shoes Logo">
+            <img src="{{asset('img/logo.png') }}" alt="Moon Shoes Logo">
         </div>
 
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <input type="text" class="form-control" name="username" placeholder="Usuario" required>
+                <input type="email" class="form-control" name="email" placeholder="Usuario" required>
             </div>
             <div class="mb-3">
                 <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
