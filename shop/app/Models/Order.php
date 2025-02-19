@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $table = "orders";
+
     use HasFactory;
 
     /**
@@ -16,23 +18,22 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'status',
-        'total',
         // agrega aquí otras columnas que quieras poder rellenar
     ];
 
     /**
      * Relación con el modelo User (si un pedido pertenece a un usuario).
      */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 
     /**
      * Relación con OrderItem (un pedido tiene varios items).
      */
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
+    // public function items()
+    // {
+    //     return $this->hasMany(OrderItem::class);
+    // }
 }
