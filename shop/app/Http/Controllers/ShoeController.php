@@ -82,13 +82,39 @@ class ShoeController extends Controller
         return view('shoes.show', compact('producto', 'tallas'));
     }
 
+    //revisar
+    public function deactivate(string $id)
+    {
+        // Obtener el producto
+        $producto = Shoe::findOrFail($id);
+
+        $producto->active = false;
+        $producto->save();
+
+    return redirect()->route('home')->with('status', 'Producto desactivado con éxito.');
+    }
+
+
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        // Obtener el producto por su ID
+        $producto = Shoe::findOrFail($id);
+
+        // Simular las tallas y su stock (puedes reemplazar esto con datos reales)
+        $tallas = [
+            ['talla' => '38', 'stock' => 10],
+            ['talla' => '39', 'stock' => 15],
+            ['talla' => '40', 'stock' => 8]
+        ];
+
+        // Pasar el producto y las tallas con stock a la vista
+        return view('shoes.edit', compact('producto', 'tallas'));
     }
+
 
     /**
      * Update the specified resource in storage.
