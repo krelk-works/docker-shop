@@ -35,7 +35,7 @@
 
 <style>
   #carouselExampleIndicators {
-    max-width: 80%; /* Puedes ajustar este valor para cambiar el tamaño general del carrusel */
+    max-width: 60%; /* Puedes ajustar este valor para cambiar el tamaño general del carrusel */
     margin: 0 auto; /* Centra el carrusel */
   }
 
@@ -45,7 +45,7 @@
 
   .carousel-item img {
     object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
-    height: 100%;
+    height: 500px; /* Ajusta la altura según tus necesidades */
   }
 </style>
 
@@ -98,7 +98,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($tallas as $talla)
+            @foreach ($tallasConStock as $talla)
                 <tr>
                     <td>{{ $talla['size'] }}</td>
                     <td>{{ $talla['stock'] }}</td>

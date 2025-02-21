@@ -30,6 +30,7 @@ Route::resource('shoes', ShoeController::class);
 Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
 Route::post('/shoes/{id}/deactivate', [ShoeController::class, 'deactivate'])->name('shoes.deactivate');
 Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('shoes.edit');
+Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
 
 
 

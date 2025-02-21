@@ -31,6 +31,29 @@
 
 <br>
 <h2>Últimos Pedidos</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Numero de Pedido</th>
+            <th>Fecha Pedido</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($ultimosPedidos as $pedido)
+            <tr>
+                <td>{{ $pedido->id }}</td>
+                <td>{{ $pedido->created_at }}</td>
+                <td>{{ $pedido->status }}</td>
+                <td>
+                    <!-- Enlace al detalle del pedido -->
+                    <a href="#" class="btn btn-primary btn-sm">Ver Detalles</a>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
 </div>
 @endsection
