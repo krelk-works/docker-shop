@@ -13,8 +13,12 @@ class ShoeController extends Controller
      */
     public function index()
     {
-        //
+        $shoes = Shoe::all(); // Obtener todos los productos
+        return view('shoes.index', compact('shoes'));
     }
+    
+  
+
 
     /**
      * Show the form for creating a new resource.
