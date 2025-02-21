@@ -18,7 +18,6 @@ class OrderFactory extends Factory
             'user_id' => User::factory(),
             // Campos de ejemplo
             'status' => $this->faker->randomElement(['pending', 'completed', 'canceled']),
-            'quantity' => $this->faker->numberBetween(1, 5),
         ];
     }
 }

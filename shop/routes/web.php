@@ -9,7 +9,7 @@ Route::get('/altaCategoria', [CategoryController::class, 'create'])->name('altaC
 Route::get('/altaCalzado', [ShoeController::class, 'create'])->name('altaCalzado');
 
 Route::get('/', function () {
-    return view('home');
+    return redirect('/home');
 });
 
 Route::get('/loginPrueba', function () {
@@ -19,6 +19,11 @@ Route::get('/loginPrueba', function () {
 Route::get('/navbar', function () {
     return view('navbar');
 });
+
+Route::get('/home2', function () {
+    return view('pages.home.home');
+});
+
 Route::resource('shoes', ShoeController::class);
 
 
