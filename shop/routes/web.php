@@ -32,6 +32,10 @@ Route::post('/shoes/{id}/deactivate', [ShoeController::class, 'deactivate'])->na
 Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('shoes.edit');
 Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
 
+Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
+Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
+Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 
 
 Route::resources([
