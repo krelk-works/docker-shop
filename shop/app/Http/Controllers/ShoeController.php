@@ -60,7 +60,7 @@ class ShoeController extends Controller
         $producto = Shoe::findOrFail($id);
 
         // Simular tallas y stock
-        $tallas = [
+        $tallasConStock = [
             ['size' => '36', 'stock' => 5],
             ['size' => '37', 'stock' => 5],
             ['size' => '38', 'stock' => 5],
@@ -79,7 +79,7 @@ class ShoeController extends Controller
         ];
 
     // Pasar el producto y las tallas a la vista
-        return view('shoes.show', compact('producto', 'tallas'));
+        return view('shoes.show', compact('producto', 'tallasConStock'));
     }
 
     //revisar
@@ -105,15 +105,41 @@ class ShoeController extends Controller
         $producto = Shoe::findOrFail($id);
 
         // Simular las tallas y su stock (puedes reemplazar esto con datos reales)
-        $tallas = [
+        $tallasConStock = [
             ['talla' => '38', 'stock' => 10],
             ['talla' => '39', 'stock' => 15],
             ['talla' => '40', 'stock' => 8]
         ];
 
         // Pasar el producto y las tallas con stock a la vista
-        return view('shoes.edit', compact('producto', 'tallas'));
+        return view('shoes.edit', compact('producto', 'tallasConStock'));
     }
+
+    public function addSize(Request $request, $id)
+{
+    // Validar los datos ingresados
+    $request->validate([
+        'talla' => 'required|string|max:10',
+        'stock' => 'required|integer|min:0',
+    ]);
+
+    // Obtener el producto por su ID
+    $producto = Shoe::findOrFail($id);
+
+    // Aquí asumimos que tienes una tabla relacionada para tallas (tabla shoe_size, por ejemplo)
+    DB::table('shoe_size')->insert([
+        'shoe_id' => $producto->id,
+        'talla' => $request->input('talla'),
+        'stock' => $request->input('stock'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    // Redirigir de vuelta con un mensaje de éxito
+    return redirect()->route('shoes.edit', $id)->with('success', 'Talla añadida correctamente.');
+}
+
+
 
 
     /**
