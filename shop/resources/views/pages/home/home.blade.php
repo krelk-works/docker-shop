@@ -28,5 +28,6 @@
           <span class="sr-only">Next</span>
         </a> --}}
       </div>
+      <script src="{{ asset('js/home.slider.js') }}" defer></script>
 </div>
 @endsection
