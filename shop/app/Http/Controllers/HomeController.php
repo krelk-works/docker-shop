@@ -33,4 +33,9 @@ class HomeController extends Controller
         LOG::info('Ultimos productos: ' . $ultimosProductos);
         return view('home', compact('ultimosProductos'));
     }
+
+    public function login()
+    {
+        return view('auth.login');
+    }
 }
