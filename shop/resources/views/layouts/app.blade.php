@@ -100,6 +100,24 @@
                                         Niño/a
                                     </a>
                                 </li>
+                                <!-- FAVORITES -->
+                                <li class="nav-item d-inline d-md-none">
+                                    <a class="nav-link" href="#">
+                                        Favourites
+                                    </a>
+                                </li>
+                                <!-- CART -->
+                                <li class="nav-item d-inline d-md-none">
+                                    <a class="nav-link" href="#">
+                                        Cart
+                                    </a>
+                                </li>
+                                 <!-- PROFILE -->
+                                 <li class="nav-item d-inline d-md-none">
+                                    <a class="nav-link" href="#">
+                                        Profile
+                                    </a>
+                                </li>
                             @endif
                         @endguest
                     </ul>
@@ -167,10 +185,10 @@
                             <!-- @endif -->
                         @else
                             <!-- FAVORITES -->
-                            <li class="nav-item" style="font-size: 1.2rem; color: black;">
+                            <li class="nav-item d-none d-md-inline" style="font-size: 1.2rem; color: black;">
                                 <a class="nav-link position-relative" href="#" aria-label="Favorites">
                                     <!-- Ícono SOLO visible en md o mayor -->
-                                    <span class="d-none d-md-inline">
+                                    <span>
                                         <i class="bi bi-heart" style="font-size: 1.2rem; color: black;"></i>
                                     </span>
 
@@ -181,16 +199,11 @@
                                 </a>
                             </li>
                             <!-- CART -->
-                            <li class="nav-item" style="font-size: 1.2rem; color: black;">
+                            <li class="nav-item d-none d-md-inline" style="font-size: 1.2rem; color: black;">
                                 <a class="nav-link position-relative" href="#" aria-label="Cart">
                                     <!-- Ícono SOLO visible en md o mayor -->
-                                    <span class="d-none d-md-inline">
+                                    <span>
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
-                                    </span>
-
-                                    <!-- Texto SOLO visible en pantallas pequeñas -->
-                                    <span class="d-inline d-md-none">
-                                        Cart
                                     </span>
 
                                     <!-- Badge siempre visible (tanto en móvil como en escritorio) -->
@@ -201,7 +214,7 @@
                                 </a>
                             </li>
                             <!-- Dropdown usuario autenticado -->
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown d-none d-md-inline">
                                 <a id="navbarDropdown" 
                                    class="nav-link dropdown-toggle" 
                                    href="#" 
