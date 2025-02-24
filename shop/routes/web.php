@@ -40,6 +40,7 @@ Route::get('/categorias', [CategoryController::class, 'index'])->name('category.
 Route::get('/pedidos', [OrderController::class, 'index'])->name('pedido.index');
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 Route::get('/administration', [AdministrationController::class, 'index'])->name('administration');
+Route::get('/administration', [AdministrationController::class, 'index'])->name('administration.home');
 Route::get('/administration/login', [AdministrationController::class, 'login'])->name('administration.login');
 Route::get('/login', [HomeController::class, 'login'])->name('home.login');
 

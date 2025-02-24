@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;  // Ajusta según la ubicación de tu modelo
+use App\Models\Shoe;  // Ajusta según la ubicación de tu modelo
 
 class AdministrationController extends Controller
 {
@@ -11,7 +13,9 @@ class AdministrationController extends Controller
      */
     public function index()
     {
-        return view('administration.home');
+        $ultimosProductos = Shoe::orderBy('created_at', 'desc')->take(4)->get();
+        $ultimosPedidos = Order::orderBy('created_at', 'desc')->take(4)->get();
+        return view('administration.home', compact('ultimosProductos', 'ultimosPedidos'));
     }
 
     public function login()
