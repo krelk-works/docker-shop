@@ -9,7 +9,7 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Descripción</th>
+            <th class='d-none d-md-table-cell'>Descripción</th>
             <th>Fecha de Creación</th>
             <th>Acciones</th>
         </tr>
@@ -18,7 +18,8 @@
         @foreach ($ultimosProductos as $producto)
             <tr>
                 <td>{{ $producto->name }}</td>
-                <td>{{ $producto->description }}</td>
+
+                <td class='d-none d-md-table-cell'>{{ $producto->description }}</td>
                 <td>{{ $producto->created_at }}</td>
                 <td>
                     <!-- Enlace al detalle del producto -->

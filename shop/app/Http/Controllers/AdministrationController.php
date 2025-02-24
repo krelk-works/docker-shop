@@ -49,6 +49,8 @@ class AdministrationController extends Controller
             'quantity'  => 'required|integer|min:0',
         ]);
 
+        
+
         // Creamos el registro de stock
         Stock::create($request->all());
 

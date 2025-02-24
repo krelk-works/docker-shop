@@ -51,7 +51,8 @@ class ShoeController extends Controller
             'category_id' => $request->category_id,
         ]);
 
-        return response()->json($shoe, 201);
+        //return response()->json($shoe, 201);
+        return redirect()->route('shoes.index')->with('status', 'Producto creado con éxito.');
     }
 
     /**

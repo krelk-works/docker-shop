@@ -3,23 +3,35 @@
 @section('content')
 <div class="container">
     <h2 class="text-center mb-4">Lista de Zapatillas</h2>
-    <a href="{{ route('shoes.create') }}" class="btn btn-primary">Añadir nueva zapatilla</a>
-    <br>
-    <br>
-    <div class="row">
-        @foreach($shoes as $shoe)
-            <div class="col-md-4 mb-3">
+    <a href="{{ route('shoes.create') }}" class="btn btn-primary mb-4">Añadir nueva zapatilla</a>
 
-                <div class="card">
-                    <img src="{{ asset('img/nike.png') }}" class="card-img-top" alt="Imagen del producto">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $shoe->name }}</h5>
-                        <p class="card-text">ID: {{ $shoe->id }}</p>
-                        <a href="{{ route('shoes.index', $shoe->id) }}" class="btn btn-primary">Ver Detalles</a>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>ID</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($shoes as $shoe)
+                <tr>
+                    <td><img src="{{ asset('img/nike.png') }}" alt="Imagen del producto" class="img-fluid" style="max-width: 100px;"></td>
+                    <td>{{ $shoe->name }}</td>
+                    <td>{{ $shoe->id }}</td>
+                    <td>
+                        <a href="{{ route('shoes.show', $shoe->id) }}" class="btn btn-primary btn-sm">Ver Detalles</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
