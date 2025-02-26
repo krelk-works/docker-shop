@@ -161,7 +161,7 @@ public function toggleStatus($id)
         $shoe->description = $request->input('description');  // Actualizar la descripción
         $shoe->price = $request->input('price');  // Actualizar el precio
         $shoe->category_id = $request->input('category_id');  // Actualizar la categoría
-        $shoe->active = $request->input('active');  // Actualizar el estado
+        //$shoe->active = $request->input('active');  // Actualizar el estado
         $shoe->save();  // Guardar los cambios
 
         return redirect()->route('shoe.index')->with('status', 'Producto actualizado con éxito.');

@@ -17,7 +17,8 @@
                 <th>Imagen</th>
                 <th>Nombre</th>
                 <th>ID</th>
-                <td>Estado</td>
+                <th>Categoria</th>
+                <th>Estado</th>
                 <th>Acciones</th>
                 <th>Editar</th>
             </tr>
@@ -28,6 +29,7 @@
                     <td><img src="{{ asset('img/nike.png') }}" alt="Imagen del producto" class="img-fluid" style="max-width: 100px;"></td>
                     <td>{{ $shoe->name }}</td>
                     <td>{{ $shoe->id }}</td>
+                    <td>{{ $shoe->category->name }}</td>
                     <td>
                         @if ($shoe->active)
                             <span class="badge bg-success">Activa</span>
