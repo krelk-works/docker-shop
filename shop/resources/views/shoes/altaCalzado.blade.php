@@ -7,7 +7,7 @@
     <h2 class="my-4">Registrar Nuevo Calzado</h2>
     
     {{-- Formulario para registrar un calzado --}}
-    <form action="{{ route('shoe.store') }}" method="POST">
+    <form action="{{ route('shoe.store') }}" enctype="multipart/form-data" method="POST">
         @csrf {{-- Token de seguridad obligatorio en Laravel --}}
 
         <div class="mb-3">
@@ -17,6 +17,15 @@
                 <div class="text-danger mt-1">{{ $message }}</div>
             @enderror
         </div>
+
+        <div class="mb-3">
+            <label for="photo" class="form-label">Foto del Calzado</label>
+            <input type="file" name="photo" id="photo" class="form-control" required>
+            @error('name')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
 
         <div class="mb-3">
             <label for="description" class="form-label">Descripción</label>

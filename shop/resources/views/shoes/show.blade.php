@@ -88,23 +88,5 @@
 </div>
 
 
-    <!-- Tallas y Stock -->
-    <h4>Tallas Disponibles</h4>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Talla</th>
-                <th>Stock</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($tallasConStock as $talla)
-                <tr>
-                    <td>{{ $talla['size'] }}</td>
-                    <td>{{ $talla['stock'] }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
 </div>
 @endsection

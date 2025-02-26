@@ -49,14 +49,13 @@ class AdministrationController extends Controller
             'quantity'  => 'required|integer|min:0',
         ]);
 
-        
+
 
         // Creamos el registro de stock
         Stock::create($request->all());
 
         // Redirigimos con un mensaje de éxito
-        return redirect()->route('stocks.index')
-                         ->with('success', 'Stock creado correctamente.');
+        return redirect()->route('stocks.index')->with('success', 'Stock creado correctamente.');
     }
 
     /**

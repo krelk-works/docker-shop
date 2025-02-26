@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Editar Producto: {{ $producto->name }}</h2>
+    <h2>Editar Producto: {{ $shoe->name }}</h2>
     
 
     <!-- Slider de fotos (placeholder) -->
@@ -31,103 +31,82 @@
             <img src="{{asset('img/nike.png') }}" class="img-fluid rounded" alt="Imagen 6">
         </div>
     </div>
+
+    <form action="{{ route('shoe.update', $shoe->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre del Producto</label>
+            <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $shoe->name) }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea name="description" id="description" class="form-control" rows="3">{{ old('description', $shoe->description) }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Precio</label>
+            <input type="number" name="price" id="price" class="form-control" step="0.01" value="{{ old('price', $shoe->price) }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="category_id" class="form-label">Categoría</label>
+            <select name="category_id" id="category_id" class="form-select" required>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" @if ($category->id == old('category_id', $shoe->category_id)) selected @endif>{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+
+
+
+
+
+
+
+
 </div>
 
 
 
 
 
-    <!-- Botón para añadir nueva foto -->
+
+
+
+
+
+
+
+
+
+    <!-- Botón para añadir nueva foto, no funciona muy bien -->
+
     <button class="btn btn-primary mb-4">Añadir Nueva Foto</button>
 
     <!-- Referencia del producto -->
-    <p><strong>ID del Producto:</strong> {{ $producto->id }}</p>
+    <p><strong>ID del Producto:</strong> {{ $shoe->id }}</p>
 
-    <!-- Tallas del producto -->
-    <h4>Tallas Disponibles</h4>
-    <ul id="lista-tallas">
-        @foreach ($tallasConStock as $item)
-    <tr>
-        <td>{{ $item['talla'] }}</td>
-        <td>{{ $item['stock'] }}</td>
-    </tr>
-        @endforeach
-    </ul>
+
 
     <!-- Botones para añadir y eliminar tallas -->
     <button class="btn btn-danger" onclick="mostrarConfirmacionEliminar()">Eliminar Talla</button>
 
-    <!-- Botón para gestionar el stock -->
-    <button class="btn btn-info mt-4" onclick="mostrarStock()">Gestionar Stock</button>
+    <!-- Botón para abrir el modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tallasModal">
+    Ver Tallas Disponibles
+</button>
 
-    <!-- Tabla de stock oculta por defecto -->
-    <div id="tabla-stock" style="display: none;" class="mt-4">
-        <h4>Stock de Tallas</h4>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Talla</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($tallasConStock as $item)
-                    <tr>
-                        <td>{{ $item['talla'] }}</td>
-                        <td>{{ $item['stock'] }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 
-    <script>
-        // Función para mostrar la tabla de stock
-        function mostrarStock() {
-            var tabla = document.getElementById('tabla-stock');
-            tabla.style.display = tabla.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
-
-    <!-- Botón para eliminar el producto -->
-    <button class="btn btn-danger mt-4" onclick="confirmarEliminarProducto()">Eliminar Producto</button>
-</div>
 
 <!-- Botón para abrir el modal -->
 <button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#modalAgregarTalla">
     Añadir Nueva Talla
 </button>
 
-
-
-<!-- Modal para agregar una nueva talla -->
-<div class="modal fade" id="modalAgregarTalla" tabindex="-1" aria-labelledby="modalAgregarTallaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAgregarTallaLabel">Añadir Nueva Talla</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="POST" action="{{ route('shoes.addSize', $producto->id) }}">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="talla" class="form-label">Talla</label>
-                        <input type="text" class="form-control" id="talla" name="talla" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" name="stock" required min="0">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Talla</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 @if (session('success'))
     <div class="alert alert-success mt-4">
@@ -170,11 +149,5 @@
         alert('Tabla de stock mostrada (simulación)');
     }
 
-    // Función para confirmar la eliminación del producto
-    function confirmarEliminarProducto() {
-        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-            alert('Producto eliminado (simulación)');
-        }
-    }
 </script>
 @endsection

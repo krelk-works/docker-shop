@@ -47,6 +47,17 @@ return [
             'report' => false,
         ],
 
+        'products' => [
+            'driver' => 'local',
+            'root' => storage_path('app/products'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

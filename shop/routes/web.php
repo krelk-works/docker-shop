@@ -34,15 +34,20 @@ Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
 Route::post('/shoes/{id}/deactivate', [ShoeController::class, 'deactivate'])->name('shoes.deactivate');
 Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('shoes.edit');
 Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
+Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
+Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
 
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
-Route::get('/categorias', [CategoryController::class, 'index'])->name('category.index');
+Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/pedidos', [OrderController::class, 'index'])->name('pedido.index');
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 Route::get('/administration', [AdministrationController::class, 'index'])->name('administration');
 Route::get('/administration', [AdministrationController::class, 'index'])->name('administration.home');
 Route::get('/administration/login', [AdministrationController::class, 'login'])->name('administration.login');
 Route::get('/login', [HomeController::class, 'login'])->name('home.login');
+Route::post('/categories/{id}/toggle', [CategoryController::class, 'toggleStatus'])->name('categories.toggle');
+Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
 
 
 Route::resources([

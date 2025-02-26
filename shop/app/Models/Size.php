@@ -13,6 +13,6 @@ class Size extends Model
     protected $table = "sizes";
 
     public function shoes(): BelongsToMany {
-        return $this->belongsToMany(Shoe::class)->withTimestamps();
+        return $this->belongsToMany(Shoe::class)->withPivot('stock')->withTimestamps();
     }
 }

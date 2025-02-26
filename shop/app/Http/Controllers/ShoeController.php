@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
@@ -35,6 +37,15 @@ class ShoeController extends Controller
      */
     public function store(Request $request)
     {
+        //foto
+        
+        $image_path=$request->file('photo');
+        if ($image_path) {
+            $image_path_name = time().$image_path->getClientOriginalName();
+            Storage::disk('products')->put($image_path_name, File::get($image_path)); //disco virtual (products)
+        }
+      
+
         // Validación del formulario
         $request->validate([
             'name' => 'required|string|max:255',
@@ -43,8 +54,12 @@ class ShoeController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
+ 
+
         // Crear el zapato en la base de datos
         $shoe = Shoe::create([
+           
+           // 'photo' => $image_path_name,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
@@ -58,34 +73,13 @@ class ShoeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
-        // Obtener el producto por su ID
         $producto = Shoe::findOrFail($id);
 
-        // Simular tallas y stock
-        $tallasConStock = [
-            ['size' => '36', 'stock' => 5],
-            ['size' => '37', 'stock' => 5],
-            ['size' => '38', 'stock' => 5],
-            ['size' => '39', 'stock' => 3],
-            ['size' => '40', 'stock' => 2],
-            ['size' => '41', 'stock' => 5],
-            ['size' => '42', 'stock' => 3],
-            ['size' => '43', 'stock' => 2],
-            ['size' => '44', 'stock' => 2],
-            ['size' => '45', 'stock' => 1],
-            ['size' => '46', 'stock' => 0],
-            ['size' => '47', 'stock' => 0],
-            ['size' => '48', 'stock' => 0],
-
-
-        ];
-
-    // Pasar el producto y las tallas a la vista
-        return view('shoes.show', compact('producto', 'tallasConStock'));
+        return view('shoes.show', compact('producto'));
     }
+    
 
     //revisar
     public function deactivate(string $id)
@@ -107,19 +101,14 @@ class ShoeController extends Controller
     public function edit($id)
     {
         // Obtener el producto por su ID
-        $producto = Shoe::findOrFail($id);
-
-        // Simular las tallas y su stock (puedes reemplazar esto con datos reales)
-        $tallasConStock = [
-            ['talla' => '38', 'stock' => 10],
-            ['talla' => '39', 'stock' => 15],
-            ['talla' => '40', 'stock' => 8]
-        ];
-
-        // Pasar el producto y las tallas con stock a la vista
-        return view('shoes.edit', compact('producto', 'tallasConStock'));
+        $shoe = Shoe::findOrFail($id);
+        $categories = Category::all();
+    
+        // Pasar el producto y las categorías a la vista
+        return view('shoes.edit', compact('shoe', 'categories'));
     }
 
+    
     public function addSize(Request $request, $id)
 {
     // Validar los datos ingresados
@@ -143,6 +132,16 @@ class ShoeController extends Controller
     // Redirigir de vuelta con un mensaje de éxito
     return redirect()->route('shoes.edit', $id)->with('success', 'Talla añadida correctamente.');
 }
+    
+
+public function toggleStatus($id)
+{
+    $shoe = Shoe::findOrFail($id);
+    $shoe->active = !$shoe->active; // Alternar estado
+    $shoe->save();
+
+    return redirect()->back()->with('success', 'Estado de la categoría actualizado.');
+}
 
 
 
@@ -152,7 +151,21 @@ class ShoeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         // Validar que el nombre no esté vacío
+         $request->validate([
+            'name' => 'required|string|max:30',
+        ]);
+
+        $shoe = Shoe::findOrFail($id);  // Obtener el producto por ID
+        $shoe->name = $request->input('name');  // Actualizar el nombre
+        $shoe->description = $request->input('description');  // Actualizar la descripción
+        $shoe->price = $request->input('price');  // Actualizar el precio
+        $shoe->category_id = $request->input('category_id');  // Actualizar la categoría
+        $shoe->active = $request->input('active');  // Actualizar el estado
+        $shoe->save();  // Guardar los cambios
+
+        return redirect()->route('shoe.index')->with('status', 'Producto actualizado con éxito.');
+
     }
 
     /**

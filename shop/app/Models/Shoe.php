@@ -24,6 +24,7 @@ class Shoe extends Model
     }
 
     public function sizes(): BelongsToMany {
-        return $this->belongsToMany(Size::class)->withTimestamps();
+        return $this->belongsToMany(Size::class)->withPivot('stock')->withTimestamps();
     }
+    
 }
