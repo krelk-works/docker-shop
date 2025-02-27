@@ -113,7 +113,8 @@
                         
                         <!-- Formulario de búsqueda: se recomienda un label oculto para accesibilidad -->
                         <li class="nav-item d-none d-md-inline">
-                            <form class="d-flex" role="search" style="padding-right: 10px">
+                            <form class="d-flex" role="search" style="padding-right: 10px" aria-label="Search" action="{{ route('shoes.search') }}" method="POST">
+                                @csrf
                                 <div class="input-group">
                                     <!-- Label oculto para accesibilidad -->
                                     <label for="search" class="visually-hidden">{{ __('Search') }}</label>
@@ -121,10 +122,14 @@
                                     <!-- Campo de texto -->
                                     <input 
                                         id="search"
+                                        name="search"
                                         type="search" 
                                         class="form-control" 
                                         placeholder="Search" 
-                                        aria-label="Search">
+                                        aria-label="Search"
+                                        value="{{ old('search') }}"
+                                        required
+                                    >
                                     
                                     <!-- Botón con icono de lupa -->
                                     <button class="btn btn-outline-success" type="submit">

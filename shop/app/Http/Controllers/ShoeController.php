@@ -86,9 +86,23 @@ class ShoeController extends Controller
 
     public function preview($id)
     {
-        $shoe = Shoe::findOrFail($id);
+        $products = Shoe::findOrFail($id);
 
-        return view('shoes.preview', compact('shoe'));
+        return view('shoes.preview', compact('products'));
+    }
+
+    // Función para buscar productos
+    public function search(Request $request)
+    {
+        LOG::info('Buscando producto: ' . $request->input('search'));
+
+        $value = $request->input('search');
+
+        $products = Shoe::where('name', 'like', '%' . $value . '%')->get();
+
+        LOG::info('Productos encontrados: ' . $products);
+
+        return view('shoes.search', compact('products'));
     }
     
 
