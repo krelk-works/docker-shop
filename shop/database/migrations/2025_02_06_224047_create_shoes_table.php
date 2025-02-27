@@ -17,6 +17,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            // Image of the shoe
+            $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }

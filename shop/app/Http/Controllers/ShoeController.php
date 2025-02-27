@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Shoe;
 
+use Illuminate\Support\Facades\Log;
+
 class ShoeController extends Controller
 {
     /**
@@ -52,7 +54,10 @@ class ShoeController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        LOG::info('Imagen de calzado: ' . $image_path_name);
 
  
 
@@ -64,6 +69,7 @@ class ShoeController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'category_id' => $request->category_id,
+            // 'image' => $image_path_name,
         ]);
 
         //return response()->json($shoe, 201);
