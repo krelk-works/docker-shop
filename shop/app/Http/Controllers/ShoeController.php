@@ -83,6 +83,13 @@ class ShoeController extends Controller
 
         return view('shoes.show', compact('producto'));
     }
+
+    public function preview($id)
+    {
+        $shoe = Shoe::findOrFail($id);
+
+        return view('shoes.preview', compact('shoe'));
+    }
     
 
     //revisar
