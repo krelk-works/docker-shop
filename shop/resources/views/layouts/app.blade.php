@@ -61,39 +61,31 @@
                                 @endforeach
                             @endif
                         @else
-                            @if (Auth::user()->role == 'admin')
+                            @foreach($categories as $category)
+                                <li><a class="nav-link" href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a></li>
+                            @endforeach
+                            @if (Auth::check() && Auth::user()->role === 'admin')
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('shoes.index') }}">
                                         Productos
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('categorias.index') }}">
+                                    <a class="nav-link" href="{{ route('category.index') }}">
                                         Categorías
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('pedidos.index') }}">
+                                    <a class="nav-link" href="{{ route('orders.index') }}">
                                         Pedidos
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        Usuarios
+                                    </a>
+                                </li>
                             @else
-                                <!-- Opciones de menú para usuarios no administradores -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Hombre
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Mujer
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Niño/a
-                                    </a>
-                                </li>
                                 <!-- FAVORITES -->
                                 <li class="nav-item d-inline d-md-none">
                                     <a class="nav-link" href="#">

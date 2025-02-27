@@ -37,6 +37,8 @@ Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('s
 Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
 Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
 
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/pedidos', [OrderController::class, 'index'])->name('pedido.index');
@@ -54,6 +56,7 @@ Route::get('/category/{id}', [CategoryController::class, 'show'])->name('categor
 Route::resources([
     'category' => CategoryController::class,
     'shoe' => ShoeController::class,
+    'order' => OrderController::class,
 ]);
 
 Auth::routes();
