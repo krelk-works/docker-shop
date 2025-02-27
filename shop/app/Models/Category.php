@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+use App\Models\Shoe;
+
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,8 @@ class Category extends Model
 
     protected $table = "categories";
 
-    public function shoes(): HasMany {
-        return $this->hasMany(Shoe::class);
+    public function products()
+    {
+        return $this->hasMany(Shoe::class, 'category_id'); // Asegúrate de que 'category_id' es la clave foránea correcta
     }
 }
