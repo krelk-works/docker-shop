@@ -48,6 +48,7 @@ Route::get('/login', [HomeController::class, 'login'])->name('home.login');
 Route::post('/categories/{id}/toggle', [CategoryController::class, 'toggleStatus'])->name('categories.toggle');
 Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
 
 
 Route::resources([

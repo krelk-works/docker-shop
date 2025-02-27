@@ -1,3 +1,9 @@
+@php
+    use App\Models\Category;
+    $categories = Category::all();
+@endphp
+
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -50,21 +56,9 @@
                         @guest
                             @if (Route::has('login'))
                                 <!-- Otras opciones de menú para invitados -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Hombre
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Mujer
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Niño/a
-                                    </a>
-                                </li>
+                                @foreach($categories as $category)
+                                <li><a class="nav-link" href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a></li>
+                                @endforeach
                             @endif
                         @else
                             @if (Auth::user()->role == 'admin')
