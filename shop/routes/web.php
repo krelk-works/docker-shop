@@ -37,6 +37,10 @@ Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('s
 Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
 Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
 
+// Public shoes routes
+Route::get('/shoes/preview/{id}', [ShoeController::class, 'preview'])->name('shoes.preview');
+Route::post('/shoes/search', [ShoeController::class, 'search'])->name('shoes.search');
+
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');

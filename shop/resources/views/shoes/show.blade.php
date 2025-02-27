@@ -1,12 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+  #carouselExampleIndicators {
+    max-width: 60%; /* Puedes ajustar este valor para cambiar el tamaño general del carrusel */
+    margin: 0 auto; /* Centra el carrusel */
+  }
+
+  .carousel-inner {
+    height: 400px; /* Ajusta la altura según tus necesidades */
+  }
+
+  .carousel-item img {
+    object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+    height: 500px; /* Ajusta la altura según tus necesidades */
+  }
+</style>
+
 <div class="container">
     <h2>Detalles del Producto: {{ $producto->name }}</h2>
 
     <!-- Sección de imágenes (vacías por ahora) -->
    
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <!-- <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <ol class="carousel-indicators">
           <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
           <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
@@ -30,24 +47,11 @@
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
-        </button>
-</div>
+        </button> -->
+      <img src="{{ asset('storage/products/' . $producto->image) }}" alt="Imágen de producto" class="img-fluid" style="max-width: 200px;">
+<!-- </div> -->
 
-<style>
-  #carouselExampleIndicators {
-    max-width: 60%; /* Puedes ajustar este valor para cambiar el tamaño general del carrusel */
-    margin: 0 auto; /* Centra el carrusel */
-  }
 
-  .carousel-inner {
-    height: 400px; /* Ajusta la altura según tus necesidades */
-  }
-
-  .carousel-item img {
-    object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
-    height: 500px; /* Ajusta la altura según tus necesidades */
-  }
-</style>
 
     <!-- Descripción -->
     <p><strong>Referéncia del Producto:</strong> {{ $producto->id }}</p>

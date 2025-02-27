@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
-@section('title', $category->name)
-
 @section('content')
     <div class="container">
-        <h1 class="mb-4">{{ $category->name }}</h1>
+        <h1 class="mb-4">Búsqueda</h1>
         
         <div class="row">
-            @foreach($category->products as $product)
+            @foreach($products as $product)
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <img src="{{ asset('storage/products/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
@@ -23,11 +21,3 @@
         </div>
     </div>
 @endsection
-
-
-<style>
-    .card {
-        width: 80%;
-        margin: 0 auto;
-    }
-</style>

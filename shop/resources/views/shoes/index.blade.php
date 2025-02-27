@@ -31,7 +31,7 @@
                     <td>{{ $shoe->id }}</td>
                     <td>{{ $shoe->category->name }}</td>
                     <td>
-                        @if ($shoe->active)
+                        @if ($shoe->active == 1)
                             <span class="badge bg-success">Activa</span>
                         @else
                             <span class="badge bg-danger">Desactivada</span>
@@ -41,9 +41,15 @@
                         <a href="{{ route('shoes.show', $shoe->id) }}" class="btn btn-primary btn-sm">Ver Detalles</a>
                     </td>
                     <td>
+                        @if ($shoe->active == 1)
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmModal{{ $shoe->id }}">
                             Desactivar
                         </button>
+                        @else
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal{{ $shoe->id }}">
+                            Activar
+                        </button>
+                        @endif
                     </td>
                 </tr>
 

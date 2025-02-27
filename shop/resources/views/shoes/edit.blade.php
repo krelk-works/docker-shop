@@ -7,21 +7,21 @@
 
     <!-- Slider de fotos (placeholder) -->
 
-    <div class="container my-4">
-    <div class="row g-2">
+    <!-- <div class="container my-4">
+    <div class="row g-2"> -->
         <!-- Imagen grande -->
-        <div class="col-12 col-md-6">
+        <!-- <div class="col-12 col-md-6">
             <img src="{{asset('img/nike.png') }}" class="img-fluid rounded" alt="Imagen 1">
-        </div>
+        </div> -->
         <!-- Imágenes pequeñas (2 en fila) -->
-        <div class="col-6 col-md-3">
+        <!-- <div class="col-6 col-md-3">
             <img src="{{asset('img/nike2.png') }}" class="img-fluid rounded" alt="Imagen 2">
         </div>
         <div class="col-6 col-md-3">
             <img src="{{asset('img/nike2.png') }}" class="img-fluid rounded" alt="Imagen 3">
-        </div>
+        </div> -->
         <!-- Otra fila con imágenes pequeñas -->
-        <div class="col-6 col-md-4">
+        <!-- <div class="col-6 col-md-4">
             <img src="{{asset('img/nike3.png') }}" class="img-fluid rounded" alt="Imagen 4">
         </div>
         <div class="col-6 col-md-4">
@@ -30,11 +30,20 @@
         <div class="col-12 col-md-4">
             <img src="{{asset('img/nike.png') }}" class="img-fluid rounded" alt="Imagen 6">
         </div>
-    </div>
+    </div> -->
 
-    <form action="{{ route('shoe.update', $shoe->id) }}" method="POST">
+    <!-- Foto principal del producto -->
+
+    <img src="{{ asset('storage/products/' . $shoe->image) }}" alt="Imagen del producto" class="img-fluid" style="max-width: 200px;">
+
+    <form action="{{ route('shoe.update', $shoe->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+
+        <div class="mb-3">
+            <label for="photo" class="form-label">Nueva imágen</label>
+            <input type="file" name="photo" id="photo" accept="image/*" class="form-control">
+        </div>
 
         <div class="mb-3">
             <label for="name" class="form-label">Nombre del Producto</label>
@@ -57,66 +66,45 @@
             </select>
         </div>
 
-
+        <p><strong>ID del Producto:</strong> {{ $shoe->id }}</p>
         <button type="submit" class="btn btn-primary">Actualizar</button>
     </form>
-
-
-
-
-
-
-
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <!-- Botón para añadir nueva foto, no funciona muy bien -->
 
-    <button class="btn btn-primary mb-4">Añadir Nueva Foto</button>
+    <!-- <button class="btn btn-primary mb-4">Añadir Nueva Foto</button> -->
 
     <!-- Referencia del producto -->
-    <p><strong>ID del Producto:</strong> {{ $shoe->id }}</p>
+    
 
 
 
     <!-- Botones para añadir y eliminar tallas -->
-    <button class="btn btn-danger" onclick="mostrarConfirmacionEliminar()">Eliminar Talla</button>
+    <!-- <button class="btn btn-danger" onclick="mostrarConfirmacionEliminar()">Eliminar Talla</button> -->
 
     <!-- Botón para abrir el modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tallasModal">
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tallasModal">
     Ver Tallas Disponibles
-</button>
+</button> -->
 
 
 
 <!-- Botón para abrir el modal -->
-<button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#modalAgregarTalla">
+<!-- <button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#modalAgregarTalla">
     Añadir Nueva Talla
-</button>
+</button> -->
 
 
 @if (session('success'))
-    <div class="alert alert-success mt-4">
+    <!-- <div class="alert alert-success mt-4">
         {{ session('success') }}
-    </div>
+    </div> -->
 @endif
 
 
 
-<script>
+<!-- <script>
     // Función para mostrar el cuadro de texto para añadir talla
     function mostrarCuadroNuevaTalla() {
         document.getElementById('cuadro-nueva-talla').style.display = 'block';
@@ -149,5 +137,5 @@
         alert('Tabla de stock mostrada (simulación)');
     }
 
-</script>
+</script> -->
 @endsection
