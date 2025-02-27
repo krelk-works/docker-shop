@@ -2,29 +2,24 @@
 
 @section('content')
 <div class="container">
-    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active" data-bs-interval="10000">
-        <img src="{{asset('img/img_slider1.png') }}" alt="Producto">
-        </div>
-        <div class="carousel-item" data-bs-interval="2000">
-        <img src="{{asset('img/img_slider1.png') }}" alt="Producto">
-        </div>
-        <div class="carousel-item">
-        <img src="{{asset('img/img_slider1.png') }}" alt="Producto">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+
+    <video class="custom-video" autoplay loop muted>
+        <source src="{{ asset('videos/videoHome.mp4') }}" type="video/mp4">
+        Tu navegador no soporta videos.
+    </video>
+
+    <style>
+        .custom-video {
+            width: 100%; /* Ocupa todo el ancho */
+            height: 50vh; /* Ajusta la altura al 50% de la pantalla */
+            object-fit: cover; /* Recorta el video para que se vea bien */
+        }
+    </style>
+
     <br>
     <br>
     <h4>Nuestros Destacados</h4>
+
     <style>
         /* Imágenes cuadradas */
         .image-container img {
