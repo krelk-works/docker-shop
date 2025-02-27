@@ -26,7 +26,7 @@
         <tbody>
             @foreach($shoes as $shoe)
                 <tr>
-                    <td><img src="{{ asset('img/nike.png') }}" alt="Imagen del producto" class="img-fluid" style="max-width: 100px;"></td>
+                    <td><img src="{{ asset('storage/products/' . $shoe->image) }}" alt="Imagen del producto" class="img-fluid" style="max-width: 100px;"></td>
                     <td>{{ $shoe->name }}</td>
                     <td>{{ $shoe->id }}</td>
                     <td>{{ $shoe->category->name }}</td>

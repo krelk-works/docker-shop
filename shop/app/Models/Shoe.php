@@ -13,7 +13,7 @@ class Shoe extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'category_id', 'description'];
+    protected $fillable = ['name', 'price', 'category_id', 'description', 'image'];
 
     protected $table = "shoes";
 

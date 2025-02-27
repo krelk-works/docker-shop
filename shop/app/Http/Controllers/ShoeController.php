@@ -39,40 +39,38 @@ class ShoeController extends Controller
      */
     public function store(Request $request)
     {
-        //foto
-        
-        $image_path=$request->file('photo');
-        if ($image_path) {
-            $image_path_name = time().$image_path->getClientOriginalName();
-            Storage::disk('products')->put($image_path_name, File::get($image_path)); //disco virtual (products)
-        }
-      
-
         // Validación del formulario
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validamos la imagen
         ]);
 
-        LOG::info('Imagen de calzado: ' . $image_path_name);
+        // Manejo de la imagen
+        $image_path_name = null;
 
- 
+        if ($request->hasFile('photo')) {
+            $image_path = $request->file('photo');
+            $image_path_name = time() . '_' . $image_path->getClientOriginalName();
+            
+            // Guardamos en el storage de Laravel en el disco 'public/products'
+            $path = $image_path->storeAs('products', $image_path_name, 'public'); 
+        }
+
+        // Log para depuración
+        Log::info('Imagen de calzado guardada: ' . $image_path_name);
 
         // Crear el zapato en la base de datos
         $shoe = Shoe::create([
-           
-           // 'photo' => $image_path_name,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'category_id' => $request->category_id,
-            // 'image' => $image_path_name,
+            'image' => $image_path_name, // Guardamos el nombre de la imagen en la BD
         ]);
 
-        //return response()->json($shoe, 201);
         return redirect()->route('shoes.index')->with('status', 'Producto creado con éxito.');
     }
 
