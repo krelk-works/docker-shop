@@ -243,6 +243,35 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <!-- Footer -->
+        <footer class="bg-light text-dark text-center py-3 shadow-footer">
+            <div class="container">
+                <p class="mb-0">© {{ date('Y') }} Tu Empresa. Todos los derechos reservados.</p>
+                <div>
+                    <a href="#" class="text-dark me-3">Política de Privacidad</a>
+                    <a href="#" class="text-dark">Términos y Condiciones</a>
+                </div>
+            </div>
+        </footer>
+
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            .shadow-footer {
+                box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1); /* Línea gris difuminada arriba */
+            }
+
+            footer {
+                margin-top: auto;
+            }
+
+        </style>
+
     </div>
 </body>
 </html>
