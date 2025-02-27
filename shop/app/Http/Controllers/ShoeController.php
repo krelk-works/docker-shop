@@ -155,21 +155,42 @@ public function toggleStatus($id)
      */
     public function update(Request $request, string $id)
     {
-         // Validar que el nombre no esté vacío
-         $request->validate([
-            'name' => 'required|string|max:30',
+        // Validación del formulario, en esta ocasión validamos que sea una imágen pero puede ser que no se quiera actualizar la imágen
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validamos la imagen
         ]);
 
+        // Obtenemos los datos del producto
         $shoe = Shoe::findOrFail($id);  // Obtener el producto por ID
+
+        // Manejo de la imagen
+        $image_path_name = null;
+        if ($request->hasFile('photo')) {
+            $image_path = $request->file('photo');
+            $image_path_name = time() . '_' . $image_path->getClientOriginalName();
+            
+            // Guardamos en el storage de Laravel en el disco 'public/products'
+            $path = $image_path->storeAs('products', $image_path_name, 'public');
+
+            // Borramos la imágen anterior si existe
+            if (file_exists(storage_path('app/public/products/' . $shoe->image))) {
+                Storage::delete('public/products/' . $shoe->image);
+            }
+        }
+
         $shoe->name = $request->input('name');  // Actualizar el nombre
         $shoe->description = $request->input('description');  // Actualizar la descripción
         $shoe->price = $request->input('price');  // Actualizar el precio
         $shoe->category_id = $request->input('category_id');  // Actualizar la categoría
-        //$shoe->active = $request->input('active');  // Actualizar el estado
+        $shoe->image = $image_path_name ?? $shoe->image;  // Actualizar la imagen si se subió una nueva
+        $shoe->updated_at = now();  // Actualizar la fecha de actualización
         $shoe->save();  // Guardar los cambios
 
         return redirect()->route('shoe.index')->with('status', 'Producto actualizado con éxito.');
-
     }
 
     /**
