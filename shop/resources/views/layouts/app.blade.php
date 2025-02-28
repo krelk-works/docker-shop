@@ -223,12 +223,6 @@
         <!-- Footer -->
         <footer class="bg-dark text-light py-4 mt-5">
             <div class="container">
-<<<<<<< HEAD
-                <p class="mb-0">© {{ date('Y') }} Moon Shoes. Todos los derechos reservados.</p>
-                <div>
-                    <a href="#" class="text-dark me-3">Política de Privacidad</a>
-                    <a href="#" class="text-dark">Términos y Condiciones</a>
-=======
                 <div class="row">
                     <!-- About -->
                     <div class="col-md-4 mb-3">
@@ -264,7 +258,6 @@
                 <!-- Copyright -->
                 <div class="text-center">
                     <p class="mb-0 small">&copy; {{ date('Y') }} Moon Shoes. Todos los derechos reservados.</p>
->>>>>>> f9376099f9a3e0676404aafff086f45849109ed5
                 </div>
             </div>
         </footer>
