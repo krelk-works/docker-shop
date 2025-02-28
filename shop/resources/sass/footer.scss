@@ -1,0 +1,33 @@
+.shadow-footer {
+    // box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1); /* Línea gris difuminada arriba */
+}
+
+/* Clase para el layout sticky */
+.sticky-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* El contenedor ocupa toda la ventana */
+    margin: 0;
+  }
+  
+  .sticky-layout main {
+    flex: 1; /* El main se expande ocupando el espacio */
+  }
+  
+  .sticky-layout footer {
+    margin-top: auto; /* Empuja el footer al final */
+  }
+  
+  /* Clase para el footer fijo */
+  .fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* Para asegurarnos de que quede sobre el contenido */
+  }
+  
+  /* Opcional: si quieres un fondo para el footer */
+  .fixed-footer.bg-light {
+    background-color: #f8f9fa;
+  }
