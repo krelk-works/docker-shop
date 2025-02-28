@@ -21,6 +21,21 @@ class Order extends Model
         // agrega aquí otras columnas que quieras poder rellenar
     ];
 
+      // Definir la relación con el modelo User
+      public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * Relación con el modelo User (si un pedido pertenece a un usuario).
      */

@@ -247,7 +247,7 @@
         <!-- Footer -->
         <footer class="bg-light text-dark text-center py-3 shadow-footer">
             <div class="container">
-                <p class="mb-0">© {{ date('Y') }} Tu Empresa. Todos los derechos reservados.</p>
+                <p class="mb-0">© {{ date('Y') }} Moon Shoes. Todos los derechos reservados.</p>
                 <div>
                     <a href="#" class="text-dark me-3">Política de Privacidad</a>
                     <a href="#" class="text-dark">Términos y Condiciones</a>

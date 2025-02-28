@@ -12,7 +12,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        // Cargar la relación user con los pedidos y obtener todos los pedidos
+        $orders = Order::with('user')->get();
+        return view('orders.allOrders', compact('orders'));
     }
 
     /**
@@ -36,7 +38,9 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $order = Order::findOrFail($id);
+
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -44,7 +48,12 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Obtener el producto por su ID
+        $order = Order::findOrFail($id);
+        //$categories = Category::all();
+    
+        // Pasar el producto y las categorías a la vista
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -52,7 +61,20 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validación del formulario
+        $request->validate([
+            'status' => 'required|in:pending,shipped,completed,processing,cancelled|max:255',
+        ]);
+    
+        // Encontrar el pedido por su ID
+        $order = Order::findOrFail($id);
+    
+        // Actualizar el estado del pedido
+        $order->status = $request->status;
+        $order->save();
+    
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('orders.index')->with('status', 'Estado del pedido actualizado con éxito.');
     }
 
     /**

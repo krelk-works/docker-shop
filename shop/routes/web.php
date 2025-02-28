@@ -55,6 +55,10 @@ Route::post('/categories/{id}/toggle', [CategoryController::class, 'toggleStatus
 Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+
 
 
 Route::resources([
