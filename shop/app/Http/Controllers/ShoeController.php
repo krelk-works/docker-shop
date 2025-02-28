@@ -86,9 +86,9 @@ class ShoeController extends Controller
 
     public function preview($id)
     {
-        $products = Shoe::findOrFail($id);
+        $shoe = Shoe::findOrFail($id);
 
-        return view('shoes.preview', compact('products'));
+        return view('shoes.preview', compact('shoe'));
     }
 
     // Función para buscar productos
