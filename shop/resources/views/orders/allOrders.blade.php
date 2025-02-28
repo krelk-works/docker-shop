@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="container">
-    <h2 class="text-center mb-4">Lista de Pedidos</h2>
+    <div class="container">
+        <h2 class="text-center mb-4">Lista de Pedidos</h2>
 
 @if (session('status'))
         <div class="alert alert-success">
@@ -43,4 +42,3 @@
     </table>
 </div>
 @endsection
-
