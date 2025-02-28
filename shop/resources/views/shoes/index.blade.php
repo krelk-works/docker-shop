@@ -46,7 +46,7 @@
                             Desactivar
                         </button>
                         @else
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal{{ $shoe->id }}">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmActivateModal{{ $shoe->id }}">
                             Activar
                         </button>
                         @endif
@@ -54,7 +54,7 @@
                 </tr>
 
 
-                <!-- Modal de Confirmación -->
+                <!-- Modal de Desactivación -->
                 <div class="modal fade" id="confirmModal{{ $shoe->id }}" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -70,6 +70,28 @@
                                 <form action="{{ route('shoes.toggle', $shoe->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-danger">Desactivar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Activación -->
+                <div class="modal fade" id="confirmActivateModal{{ $shoe->id }}" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirmar Activación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de que deseas activar el producto "{{ $shoe->name }}"?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <form action="{{ route('shoes.toggle', $shoe->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success">Activar</button>
                                 </form>
                             </div>
                         </div>
