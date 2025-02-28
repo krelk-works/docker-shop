@@ -16,6 +16,7 @@
             <tr>
                 <th>ID del Pedido</th>
                 <th>Usuario</th>
+                <th>Email Usuario</th>
                 <th>Estado</th>
                 <th>Precio Total</th>
                 <th>Fecha Pedido</th>
@@ -27,6 +28,8 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->user->name }}</td>
+                    <td>{{ $order->user->email }}</td>
+
                     <td>{{$order->status}}</td>
                     <td>{{$order->total}} €</td>
                     <td>{{$order->created_at}}</td>
