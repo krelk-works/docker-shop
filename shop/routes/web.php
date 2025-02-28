@@ -42,6 +42,7 @@ Route::get('/shoes/preview/{id}', [ShoeController::class, 'preview'])->name('sho
 Route::post('/shoes/search', [ShoeController::class, 'search'])->name('shoes.search');
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/search', [OrderController::class, 'search'])->name('orders.search');
 
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');

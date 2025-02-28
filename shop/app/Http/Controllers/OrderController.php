@@ -84,4 +84,16 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        // Obtener los pedidos con los usuarios relacionados filtrados por el estado y correo de usuario que vendran en la request
+        $orders = Order::with('user')
+            ->where('status', $request->status)
+            ->whereHas('user', function ($query) use ($request) {
+                $query->where('email', 'like', "%{$request->email}%");
+            })
+            ->get();
+        return view('orders.allOrders', compact('orders'));
+    }
 }
