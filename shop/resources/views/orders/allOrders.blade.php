@@ -13,7 +13,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID del Pedido</th>
+                <th>ID del Pedidoo</th>
                 <th>Usuario</th>
                 <th>Email Usuario</th>
                 <th>Estado</th>
