@@ -3,7 +3,6 @@
     $categories = Category::all();
 @endphp
 
-
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -27,8 +26,8 @@
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
 </head>
 
-<body>
-    <div id="app">
+<body class="d-flex flex-column min-vh-100">
+    <div id="app" class="flex-grow-1">
         <!-- Agregamos aria-label para indicar que es navegación principal -->
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" aria-label="Main navigation">
             <div class="container">
@@ -247,50 +246,49 @@
                 @endif
             @endguest
         </main>
+    </div>
 
-        <!-- Footer -->
-        <footer class="bg-dark text-light py-4 mt-5">
-            <div class="container">
-                <div class="row">
-                    <!-- About -->
-                    <div class="col-md-4 mb-3">
-                        <h5>Moon Shoes</h5>
-                        <p class="small">
-                            Tienda especializada en calzado para todas las edades. Encuentra la mejor calidad y diseño
-                            para tu estilo.
-                        </p>
-                    </div>
-
-                    <!-- Quick Links -->
-                    <div class="col-md-4 mb-3">
-                        <h5>Enlaces</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-white text-decoration-none">Inicio</a></li>
-                            <li><a href="#" class="text-white text-decoration-none">Tienda</a></li>
-                            <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
-                            <li><a href="#" class="text-white text-decoration-none">Sobre Nosotros</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Contact -->
-                    <div class="col-md-4 mb-3">
-                        <h5>Contacto</h5>
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-telephone-fill me-2"></i>(+34) 123 456 789</li>
-                            <li><i class="bi bi-envelope-fill me-2"></i>info@moonshoes.com</li>
-                            <li><i class="bi bi-geo-alt-fill me-2"></i>Calle Luna 123, 28000 Madrid</li>
-                        </ul>
-                    </div>
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <!-- About -->
+                <div class="col-md-4 mb-3">
+                    <h5>Moon Shoes</h5>
+                    <p class="small">
+                        Tienda especializada en calzado para todas las edades. Encuentra la mejor calidad y diseño
+                        para tu estilo.
+                    </p>
                 </div>
-                <hr class="border-light">
-                <!-- Copyright -->
-                <div class="text-center">
-                    <p class="mb-0 small">&copy; {{ date('Y') }} Moon Shoes. Todos los derechos reservados.</p>
+
+                <!-- Quick Links -->
+                <div class="col-md-4 mb-3">
+                    <h5>Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Inicio</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Tienda</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Sobre Nosotros</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-4 mb-3">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-telephone-fill me-2"></i>(+34) 123 456 789</li>
+                        <li><i class="bi bi-envelope-fill me-2"></i>info@moonshoes.com</li>
+                        <li><i class="bi bi-geo-alt-fill me-2"></i>Calle Luna 123, 28000 Madrid</li>
+                    </ul>
                 </div>
             </div>
-        </footer>
-
-    </div>
+            <hr class="border-light">
+            <!-- Copyright -->
+            <div class="text-center">
+                <p class="mb-0 small">&copy; {{ date('Y') }} Moon Shoes. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

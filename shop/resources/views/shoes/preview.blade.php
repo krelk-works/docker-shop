@@ -24,6 +24,8 @@
                                 <a href="#" class="btn btn-success btn-lg">
                                     <i class="bi bi-cart-plus"></i> Agregar al carrito
                                 </a>
+                                <button onclick="window.location='{{ route('merchandising.index') }}';">Personalizar</button>
+
                                 <a href="{{ route('shoes.index') }}" class="btn btn-outline-secondary btn-lg">
                                     <i class="bi bi-arrow-left"></i> Volver a la tienda
                                 </a>
