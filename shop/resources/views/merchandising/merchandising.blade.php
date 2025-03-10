@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 
 <!DOCTYPE html>
@@ -8,9 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personalizar Producto</title>
     <style>
-        /* Agregar algo de estilo al canvas */
+        /* Estilos para el canvas */
         canvas {
             border: 1px solid #000;
+            background-color: white;
         }
     </style>
 </head>
@@ -32,15 +34,15 @@
     <!-- Canvas para dibujar -->
     <canvas id="canvas" width="500" height="500"></canvas>
 
+    <!-- Botón para borrar el dibujo -->
+    <button onclick="clearCanvas()">Borrar</button>
+
     <!-- Botón para guardar la imagen -->
     <form id="saveForm" method="POST" action="{{ route('merchandising.store') }}">
         @csrf
         <input type="hidden" name="image" id="imageInput">
         <button type="submit">Guardar Diseño</button>
     </form>
-
-    <button onclick="clearCanvas()">Borrar</button>
-
 
     <script>
         // Obtener elementos del DOM
@@ -66,6 +68,13 @@
             currentLineWidth = lineWidth.value;
         });
 
+        // Cargar la foto de la camiseta en el canvas
+        const shirtImage = new Image();
+        shirtImage.src = '/img/camisetaBlanca.jpg';  // Ruta de la camiseta
+        shirtImage.onload = () => {
+            ctx.drawImage(shirtImage, 0, 0, canvas.width, canvas.height);  // Dibujar la imagen de fondo
+        };
+
         // Funciones para empezar a dibujar
         canvas.addEventListener('mousedown', (e) => {
             drawing = true;
@@ -87,6 +96,12 @@
             drawing = false;
         });
 
+        // Función para borrar el contenido del canvas
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Borrar todo lo que hay en el canvas
+            ctx.drawImage(shirtImage, 0, 0, canvas.width, canvas.height); // Volver a dibujar la imagen de la camiseta
+        }
+
         // Guardar la imagen como base64
         saveForm.addEventListener('submit', (e) => {
             e.preventDefault();  // Evitar envío de formulario por defecto
@@ -94,12 +109,6 @@
             imageInput.value = imageData;  // Guardar la imagen base64 en el campo oculto
             saveForm.submit();  // Enviar el formulario con la imagen
         });
-
-        // Función para borrar el contenido del canvas
-        function clearCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Borrar todo lo que hay en el canvas
-        }
-
     </script>
 
 </body>
