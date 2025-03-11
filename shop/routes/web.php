@@ -6,6 +6,7 @@ use App\Http\Controllers\ShoeController;
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\MerchandisingController;
 
 
@@ -73,7 +74,13 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
 Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
 
+# Carrito de compra
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
+# Favoritos
+Route::get('/favorites', function () {
+    return view('favorites.index');
+})->name('favorites');
 
 Route::resources([
     'category' => CategoryController::class,

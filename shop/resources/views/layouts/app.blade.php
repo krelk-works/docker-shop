@@ -95,7 +95,7 @@
                                 </li>
                                 <!-- CART -->
                                 <li class="nav-item d-inline d-md-none">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{ route('cart.index') }}">
                                         Cart
                                     </a>
                                 </li>
@@ -140,7 +140,7 @@
                             @if (Route::has('login'))
                                 <!-- Carrito -->
                                 <li class="nav-item">
-                                    <a class="nav-link position-relative offline-cart" href="#" aria-label="Cart" data-toggle="modal" data-target="#exampleModal">
+                                    <a class="nav-link position-relative offline-cart" href="{{ route('cart') }}" aria-label="Cart" data-toggle="modal" data-target="#exampleModal">
                                         <!-- Ícono de carrito -->
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
                                         <!-- Badge -->
@@ -176,7 +176,7 @@
                             </li>
                             <!-- CART -->
                             <li class="nav-item d-none d-md-inline" style="font-size: 1.2rem; color: black;">
-                                <a class="nav-link position-relative" href="#" aria-label="Cart">
+                                <a class="nav-link position-relative" href="{{ route('cart') }}" aria-label="Cart">
                                     <!-- Ícono SOLO visible en md o mayor -->
                                     <span>
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
