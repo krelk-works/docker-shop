@@ -34,9 +34,13 @@ Route::get('/navbar', function () {
 
 
 //merchandising
-//Route::get('/merchandising', function () {
-    //return view('merchandising.merchandising'); // Coincide con la ubicación de la vista
-//});
+Route::get('/merchandising', function () {
+    return view('merchandising.merchandising'); // Coincide con la ubicación de la vista
+});
+Route::post('/merchandising', [MerchandisingController::class, 'store'])->name('merchandising.store');
+Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('merchandising.index');
+
+
 
 //grafico
 Route::get('/charts', function () {

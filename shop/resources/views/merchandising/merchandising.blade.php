@@ -3,8 +3,6 @@
 @section('content')
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personalizar Producto</title>
@@ -15,8 +13,8 @@
             background-color: white;
         }
     </style>
-</head>
-<body>
+
+<div class="container mt-5">
 
     <h1>Personaliza tu Producto</h1>
 
@@ -73,6 +71,18 @@
         shirtImage.src = '/img/camisetaBlanca.jpg';  // Ruta de la camiseta
         shirtImage.onload = () => {
             ctx.drawImage(shirtImage, 0, 0, canvas.width, canvas.height);  // Dibujar la imagen de fondo
+
+            // Definir el área de recorte (clipping)
+            const clipX = 150; // Coordenada X del recuadro
+            const clipY = 150; // Coordenada Y del recuadro
+            const clipWidth = 200; // Ancho del recuadro
+            const clipHeight = 200; // Alto del recuadro
+
+            ctx.beginPath();
+            ctx.rect(clipX, clipY, clipWidth, clipHeight);
+            ctx.strokeStyle = 'red'; // Añadir un borde rojo para visualizar el área de recorte
+            ctx.stroke(); // Dibujar el borde del área de recorte
+            ctx.clip(); // Aplicar el recorte
         };
 
         // Funciones para empezar a dibujar
@@ -100,6 +110,18 @@
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height); // Borrar todo lo que hay en el canvas
             ctx.drawImage(shirtImage, 0, 0, canvas.width, canvas.height); // Volver a dibujar la imagen de la camiseta
+
+            // Volver a aplicar el recorte
+            const clipX = 150; // Coordenada X del recuadro
+            const clipY = 150; // Coordenada Y del recuadro
+            const clipWidth = 200; // Ancho del recuadro
+            const clipHeight = 200; // Alto del recuadro
+
+            ctx.beginPath();
+            ctx.rect(clipX, clipY, clipWidth, clipHeight);
+            ctx.strokeStyle = 'red'; // Añadir un borde rojo para visualizar el área de recorte
+            ctx.stroke(); // Dibujar el borde del área de recorte
+            ctx.clip(); // Aplicar el recorte
         }
 
         // Guardar la imagen como base64
@@ -111,7 +133,6 @@
         });
     </script>
 
-</body>
-</html>
+    </div>
 
 @endsection
