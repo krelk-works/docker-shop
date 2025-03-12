@@ -82,6 +82,11 @@ Route::get('/favorites', function () {
     return view('favorites.index');
 })->name('favorites');
 
+# Chart de ejemplo
+Route::get('/chart', function () {
+    return view('administration.chart');
+})->name('chart');
+
 Route::resources([
     'category' => CategoryController::class,
     'shoe' => ShoeController::class,
