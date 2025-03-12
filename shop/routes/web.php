@@ -8,6 +8,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MerchandisingController;
+use App\Http\Controllers\ChartController;
+
 
 
 Route::get('/category/create', [CategoryController::class, 'create'])->name('altaCategoria');
@@ -36,9 +38,11 @@ Route::get('/navbar', function () {
     //return view('merchandising.merchandising'); // Coincide con la ubicación de la vista
 //});
 
-Route::post('/merchandising/store', [MerchandisingController::class, 'store'])->name('merchandising.store');
-Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('merchandising.index');
-
+//grafico
+Route::get('/charts', function () {
+    return view('charts');
+})->name('charts.view');
+Route::get('/charts-data', [ChartController::class, 'getChartData']);
 
 
 Route::resource('shoes', ShoeController::class);

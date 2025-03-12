@@ -1,34 +1,26 @@
 <?php
 
+// app/Models/OrderItem.php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    use HasFactory;
+    protected $table = 'order_items'; // Asegúrate de que la tabla sea correcta
 
-    protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        // Agrega más campos si los necesitas.
-    ];
-
-    /**
-     * Relación con Order (un Item pertenece a un Pedido)
-     */
+    // Definir la relación con el modelo Order
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
-    /**
-     * Relación con Product (un Item pertenece a un Producto)
-     */
-    public function product()
+    // Definir la relación con el modelo Shoe
+    public function shoe()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Shoe::class, 'product_id');
     }
 }
+
+

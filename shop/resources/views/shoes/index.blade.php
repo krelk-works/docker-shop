@@ -4,6 +4,7 @@
 <div class="container">
     <h2 class="text-center mb-4">Lista de Zapatillas</h2>
     <a href="{{ route('shoes.create') }}" class="btn btn-primary mb-4">Añadir nueva zapatilla</a>
+    <a href="{{ route('charts.view') }}" class="btn btn-primary mb-4">Ver Gráficos</a>
 
     @if (session('status'))
         <div class="alert alert-success">
