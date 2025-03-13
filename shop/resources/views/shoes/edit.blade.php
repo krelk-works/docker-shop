@@ -68,7 +68,7 @@
         </div>
         {{-- El producto tiene oferta? 0 = No, entre 1 y 100 = Porcentaje de descuento --}}
         <div class="mb-3">
-            <label for="discount" class="form-label">Descuento</label>
+            <label for="discount" class="form-label">Descuento (%)</label>
             <input type="number" name="discount" id="discount" class="form-control" value="{{ old('discount', $shoe->discount) }}" required>
         </div>
         <div class="mb-3">
