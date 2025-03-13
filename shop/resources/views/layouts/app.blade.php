@@ -75,10 +75,12 @@
                             @endif
                         @else
                             @foreach ($categories as $category)
-                                <li>
-                                    <a class="nav-link"
-                                        href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
-                                </li>
+                                @if ($category->active === 1)
+                                    <li>
+                                        <a class="nav-link"
+                                            href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
+                                    </li>
+                                @endif
                             @endforeach
                             @if (Auth::check() && Auth::user()->role === 'admin')
                                 <li class="nav-item">
