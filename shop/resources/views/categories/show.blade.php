@@ -33,10 +33,12 @@
     @endif
 @endsection
 
-
+{{-- 
 <style>
     .card {
         width: 80%;
         margin: 0 auto;
     }
-</style>
+</style> --}}
+
+{{-- NOTA: Este código hacía que la búsqueda del navbar se desplazara hacía arriba --}}

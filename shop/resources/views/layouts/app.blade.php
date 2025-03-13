@@ -26,19 +26,21 @@
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
 </head>
 
-    <!--Start of Tawk.to Script-->
+<!--Start of Tawk.to Script-->
 <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/67cec5e33de42919170a7c0a/1ilvra0ki';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
+    var Tawk_API = Tawk_API || {},
+        Tawk_LoadStart = new Date();
+    (function() {
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/67cec5e33de42919170a7c0a/1ilvra0ki';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
     })();
 </script>
-    <!--End of Tawk.to Script-->
+<!--End of Tawk.to Script-->
 
 
 <body class="d-flex flex-column min-vh-100">
@@ -64,65 +66,34 @@
 
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        @guest
-                            @if (Route::has('login'))
-                                <!-- Otras opciones de menú para invitados -->
-                                @foreach ($categories as $category)
-                                    <li><a class="nav-link"
-                                            href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
-                                    </li>
-                                @endforeach
-                            @endif
-                        @else
-                            @foreach ($categories as $category)
-                                @if ($category->active === 1)
-                                    <li>
-                                        <a class="nav-link"
-                                            href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
-                                    </li>
-                                @endif
-                            @endforeach
-                            @if (Auth::check() && Auth::user()->role === 'admin')
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('shoes.index') }}">
-                                        Productos
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('category.index') }}">
-                                        Categorías
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('orders.index') }}">
-                                        Pedidos
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Usuarios
-                                    </a>
-                                </li>
-                            @else
-                                <!-- FAVORITES -->
-                                <li class="nav-item d-inline d-md-none">
-                                    <a class="nav-link" href="#">
-                                        Favourites
-                                    </a>
-                                </li>
-                                <!-- CART -->
-                                <li class="nav-item d-inline d-md-none">
-                                    <a class="nav-link" href="{{ route('cart.index') }}">
-                                        Cart
-                                    </a>
-                                </li>
-                                <!-- PROFILE -->
-                                <li class="nav-item d-inline d-md-none">
-                                    <a class="nav-link" href="#">
-                                        Profile
-                                    </a>
+
+                        @foreach ($categories as $category)
+                            @if ($category->active === 1)
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
                                 </li>
                             @endif
+                        @endforeach
+                        @auth
+                            <!-- FAVORITES -->
+                            <li class="nav-item d-inline d-md-none">
+                                <a class="nav-link" href="#">
+                                    Favourites
+                                </a>
+                            </li>
+                            <!-- CART -->
+                            <li class="nav-item d-inline d-md-none">
+                                <a class="nav-link" href="{{ route('cart') }}">
+                                    Cart
+                                </a>
+                            </li>
+                            <!-- PROFILE -->
+                            <li class="nav-item d-inline d-md-none">
+                                <a class="nav-link" href="#">
+                                    Profile
+                                </a>
+                            </li>
                         @endguest
                     </ul>
 
@@ -131,7 +102,7 @@
 
                         <!-- Formulario de búsqueda: se recomienda un label oculto para accesibilidad -->
                         <li class="nav-item d-none d-md-inline">
-                            <form class="d-flex" role="search" style="padding-right: 10px" aria-label="Search"
+                            <form class="d-flex" role="search" aria-label="Search"
                                 action="{{ route('shoes.search') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
@@ -157,7 +128,8 @@
                             @if (Route::has('login'))
                                 <!-- Carrito -->
                                 <li class="nav-item">
-                                    <a class="nav-link position-relative offline-cart" href="{{ route('cart') }}" aria-label="Cart" data-toggle="modal" data-target="#exampleModal">
+                                    <a class="nav-link position-relative offline-cart" href="{{ route('cart') }}"
+                                        aria-label="Cart" data-toggle="modal" data-target="#exampleModal">
                                         <!-- Ícono de carrito -->
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
                                         <!-- Badge -->
@@ -215,12 +187,25 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if (Auth::check() && Auth::user()->role === 'admin')
+                                        <a class="dropdown-item" href="{{ route('shoes.index') }}">
+                                            Productos
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('category.index') }}">
+                                            Categorías
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                            Pedidos
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            Usuarios
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                         class="d-none">
                                         @csrf

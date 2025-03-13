@@ -46,6 +46,8 @@ class ShoeController extends Controller
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validamos la imagen
+            'featured' => 'nullable|boolean|integer',
+            'discount' => 'nullable|integer|min:0|max:100',
         ]);
 
         // Manejo de la imagen
@@ -69,6 +71,8 @@ class ShoeController extends Controller
             'price' => $request->price,
             'category_id' => $request->category_id,
             'image' => $image_path_name, // Guardamos el nombre de la imagen en la BD
+            'featured' => $request->featured ?? false, // Si no se envía, por defecto es false
+            'discount' => $request->discount ?? 0, // Si no se envía, por defecto es 0
         ]);
 
         return redirect()->route('shoes.index')->with('status', 'Producto creado con éxito.');
@@ -183,6 +187,8 @@ public function toggleStatus($id)
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validamos la imagen
+            'featured' => 'nullable|boolean|integer',
+            'discount' => 'nullable|integer|min:0|max:100',
         ]);
 
         // Obtenemos los datos del producto
@@ -209,6 +215,8 @@ public function toggleStatus($id)
         $shoe->category_id = $request->input('category_id');  // Actualizar la categoría
         $shoe->image = $image_path_name ?? $shoe->image;  // Actualizar la imagen si se subió una nueva
         $shoe->updated_at = now();  // Actualizar la fecha de actualización
+        $shoe->featured = $request->input('featured') ?? false;  // Actualizar si es destacado
+        $shoe->discount = $request->input('discount') ?? 0;  // Actualizar el descuento
         $shoe->save();  // Guardar los cambios
 
         return redirect()->route('shoe.index')->with('status', 'Producto actualizado con éxito.');

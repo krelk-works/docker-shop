@@ -1,0 +1,57 @@
+.custom-video {
+    width: 100%;
+    /* Ocupa todo el ancho */
+    height: 50vh;
+    /* Ajusta la altura al 50% de la pantalla */
+    object-fit: cover;
+    /* Recorta el video para que se vea bien */
+}
+
+/* Imágenes cuadradas */
+.image-container img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    /* Hace que todas sean cuadradas */
+    object-fit: cover;
+    /* Evita deformaciones */
+    border-radius: 8px;
+    /* Opcional: bordes redondeados */
+}
+
+/* Scroll horizontal en móviles */
+.image-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    /* Oculta la barra en algunos navegadores */
+}
+
+.image-slider::-webkit-scrollbar {
+    display: none;
+    /* Oculta la barra en Chrome y Safari */
+}
+
+.image-slider img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+    .image-slider {
+        overflow-x: hidden;
+    }
+
+    /* Oculta el scroll en pantallas grandes */
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 400px;
+    /* Ajusta la altura */
+    object-fit: cover;
+    /* Evita deformaciones */
+}
