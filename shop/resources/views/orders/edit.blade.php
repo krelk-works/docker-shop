@@ -21,7 +21,6 @@
             <button type="submit" class="btn btn-success">Guardar Cambios</button>
 
         </div>
-
-    
+    </form>
 </div>
 @endsection
