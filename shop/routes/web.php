@@ -43,12 +43,10 @@ Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('m
 
 
 //grafico
-Route::get('/charts', function () {
+Route::get('/chart', function () {
     return view('charts');
-})->name('charts.view');
-Route::get('/charts-data', [ChartController::class, 'getChartData']);
-
-
+})->name('chart.view');
+Route::get('/chart-data', [ChartController::class, 'getChartData'])->name('chart.data');
 Route::resource('shoes', ShoeController::class);
 
 
