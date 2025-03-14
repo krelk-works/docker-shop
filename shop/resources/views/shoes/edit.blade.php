@@ -57,6 +57,20 @@
             <label for="price" class="form-label">Precio</label>
             <input type="number" name="price" id="price" class="form-control" step="0.01" value="{{ old('price', $shoe->price) }}" required>
         </div>
+        {{-- El producto es destacado? --}}
+        <div class="mb-3">
+            <label for="featured" class="form-label
+            ">Destacado</label>
+            <select name="featured" id="featured" class="form-select" required>
+                <option value="0" @if (old('featured', $shoe->featured) == 0) selected @endif>No</option>
+                <option value="1" @if (old('featured', $shoe->featured) == 1) selected @endif>Sí</option>
+            </select>
+        </div>
+        {{-- El producto tiene oferta? 0 = No, entre 1 y 100 = Porcentaje de descuento --}}
+        <div class="mb-3">
+            <label for="discount" class="form-label">Descuento (%)</label>
+            <input type="number" name="discount" id="discount" class="form-control" value="{{ old('discount', $shoe->discount) }}" required>
+        </div>
         <div class="mb-3">
             <label for="category_id" class="form-label">Categoría</label>
             <select name="category_id" id="category_id" class="form-select" required>

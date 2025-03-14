@@ -10,8 +10,6 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\MerchandisingController;
 use App\Http\Controllers\ChartController;
 
-
-
 Route::get('/category/create', [CategoryController::class, 'create'])->name('altaCategoria');
 
 Route::get('/altaCalzado', [ShoeController::class, 'create'])->name('altaCalzado');
