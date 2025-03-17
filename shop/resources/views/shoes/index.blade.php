@@ -2,102 +2,60 @@
 
 @section('content')
 <div class="container">
-    <h2 class="text-center mb-4">Lista de Zapatillas</h2>
-    <a href="{{ route('shoes.create') }}" class="btn btn-primary mb-4">Añadir nueva zapatilla</a>
-    {{-- <a href="{{ route('chart.view') }}" class="btn btn-primary mb-4">Ver Gráficos</a> --}}
+    <h2>Lista de Zapatos</h2>
+    <a href="{{ route('shoes.create') }}" class="btn btn-primary mb-3">Añadir Nuevo Zapato</a>
 
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-bordered">
+        <thead class="table-dark">
             <tr>
                 <th>Imagen</th>
-                <th>Nombre</th>
-                <th>ID</th>
-                <th>Categoria</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Descuento</th>
+                <th>Color</th>
+                <th>Talla</th>
                 <th>Estado</th>
                 <th>Acciones</th>
-                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($shoes as $shoe)
+            @foreach ($shoes as $shoe)
                 <tr>
-                    <td><img src="{{ asset('storage/products/' . $shoe->image) }}" alt="Imagen del producto" class="img-fluid" style="max-width: 100px;"></td>
-                    <td>{{ $shoe->name }}</td>
-                    <td>{{ $shoe->id }}</td>
-                    <td>{{ $shoe->category->name }}</td>
                     <td>
-                        @if ($shoe->active == 1)
-                            <span class="badge bg-success">Activa</span>
+                        @if($shoe->image)
+                            <img src="{{ asset('storage/' . $shoe->image) }}" width="50" height="50">
                         @else
-                            <span class="badge bg-danger">Desactivada</span>
+                            No Image
+                        @endif
+                    </td>
+                    <td>{{ $shoe->brand->name }}</td>
+                    <td>{{ $shoe->model->name }}</td>
+                    <td>${{ number_format($shoe->price, 2) }}</td>
+                    <td>{{ $shoe->stock }}</td>
+                    <td>{{ $shoe->discount }}%</td>
+                    <td>{{ $shoe->color->name }}</td>
+                    <td>{{ $shoe->size->name }}</td>
+                    <td>
+                        @if($shoe->active)
+                            <span class="badge bg-success">Activo</span>
+                        @else
+                            <span class="badge bg-danger">Inactivo</span>
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('shoes.show', $shoe->id) }}" class="btn btn-primary btn-sm">Ver Detalles</a>
-                    </td>
-                    <td>
-                        @if ($shoe->active == 1)
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmModal{{ $shoe->id }}">
-                            Desactivar
-                        </button>
-                        @else
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmActivateModal{{ $shoe->id }}">
-                            Activar
-                        </button>
-                        @endif
+                        <a href="{{ route('shoes.edit', $shoe->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ route('shoes.destroy', $shoe->id) }}" method="POST" style="display:inline;">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que quieres eliminar este zapato?')">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
-
-
-                <!-- Modal de Desactivación -->
-                <div class="modal fade" id="confirmModal{{ $shoe->id }}" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmModalLabel">Confirmar Desactivación</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                ¿Estás seguro de que deseas desactivar el producto "{{ $shoe->name }}"?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <form action="{{ route('shoes.toggle', $shoe->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger">Desactivar</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal de Activación -->
-                <div class="modal fade" id="confirmActivateModal{{ $shoe->id }}" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmModalLabel">Confirmar Activación</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                ¿Estás seguro de que deseas activar el producto "{{ $shoe->name }}"?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <form action="{{ route('shoes.toggle', $shoe->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success">Activar</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             @endforeach
         </tbody>
     </table>

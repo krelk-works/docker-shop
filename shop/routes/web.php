@@ -6,9 +6,13 @@ use App\Http\Controllers\ShoeController;
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\CartController;
+// use App\Http\Controllers\CartController;
 use App\Http\Controllers\MerchandisingController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ShoeModelController;
+use App\Http\Controllers\ColorController;
+use App\Http\Controllers\SizeController;
 
 Route::get('/category/create', [CategoryController::class, 'create'])->name('altaCategoria');
 
@@ -46,16 +50,12 @@ Route::get('/charts', function () {
 })->name('charts.view');
 Route::get('/charts-data', [ChartController::class, 'getChartData']);
 
-
-Route::resource('shoes', ShoeController::class);
-
-
-Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
-Route::post('/shoes/{id}/deactivate', [ShoeController::class, 'deactivate'])->name('shoes.deactivate');
-Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('shoes.edit');
-Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
-Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
-Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
+// Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
+// Route::post('/shoes/{id}/deactivate', [ShoeController::class, 'deactivate'])->name('shoes.deactivate');
+// Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('shoes.edit');
+// Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
+// Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
+// Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
 
 // Public shoes routes
 Route::get('/shoes/preview/{id}', [ShoeController::class, 'preview'])->name('shoes.preview');
@@ -67,7 +67,7 @@ Route::get('/orders/search', [OrderController::class, 'search'])->name('orders.s
 Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/pedidos', [OrderController::class, 'index'])->name('pedido.index');
-Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
+// Route::get('/shoes', [ShoeController::class, 'index'])->name('shoes.index');
 Route::get('/administration', [AdministrationController::class, 'index'])->name('administration');
 Route::get('/administration', [AdministrationController::class, 'index'])->name('administration.home');
 Route::get('/administration/login', [AdministrationController::class, 'login'])->name('administration.login');
@@ -81,7 +81,13 @@ Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.
 Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
 
 # Carrito de compra
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
+#Route::get('/cart', [CartController::class, 'index'])->name('cart');
+
+// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+// Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+// Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
 
 # Favoritos
 Route::get('/favorites', function () {
@@ -95,9 +101,22 @@ Route::get('/chart', function () {
 
 Route::resources([
     'category' => CategoryController::class,
-    'shoe' => ShoeController::class,
+    'shoes' => ShoeController::class,
     'order' => OrderController::class,
+    'brands' => BrandController::class,
+    'sizes' => SizeController::class,
 ]);
+
+Route::resource('colors', ColorController::class);
+
+
+// Definimos así las rutas para evitar conflictos con las rutas de los recursos
+Route::get('/_models', [ShoeModelController::class, 'index'])->name('models.index');
+Route::get('/_models/create', [ShoeModelController::class, 'create'])->name('models.create');
+Route::post('/_models', [ShoeModelController::class, 'store'])->name('models.store');
+Route::get('/_models/{model}/edit', [ShoeModelController::class, 'edit'])->name('models.edit');
+Route::put('/_models/{model}', [ShoeModelController::class, 'update'])->name('models.update');
+Route::delete('/_models/{model}', [ShoeModelController::class, 'destroy'])->name('models.destroy');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

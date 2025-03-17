@@ -2,63 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Size;
 use Illuminate\Http\Request;
 
 class SizeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $sizes = Size::all();
+        return view('sizes.index', compact('sizes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('sizes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        /**
+         * Validaciones del name:
+         * Debe ser un numero y que no tenga mas de 1 decimal
+         * No puede contener ni letras ni caracteres especiales (solo numeros y un punto)
+         * No puede ser negativo
+         * No puede ser mayor a 100
+         * No puede ser menor a 30
+         */
+
+        $request->validate([
+            'name' => [
+                'required',
+                'numeric',
+                'between:30,100',
+                'regex:/^\d+(\.\d{1})?$/', // Permite solo números con máximo 1 decimal
+                'unique:sizes',
+            ],
+        ]);
+        
+        
+
+        Size::create($request->all());
+
+        return redirect()->route('sizes.index')->with('success', 'Talla creada con éxito.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Size $size)
     {
-        //
+        return view('sizes.edit', compact('size'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Size $size)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:sizes,name,' . $size->id
+        ]);
+
+        $size->update($request->all());
+
+        return redirect()->route('sizes.index')->with('success', 'Talla actualizada con éxito.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Size $size)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $size->delete();
+        return redirect()->route('sizes.index')->with('success', 'Talla eliminada con éxito.');
     }
 }

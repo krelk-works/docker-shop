@@ -1,126 +1,81 @@
 <?php
 
-namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
+use App\Models\Product;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Mostrar carrito
     public function index()
     {
-        //
-        return view('cart.index');
+        if (auth()->check()) {
+            // Usuario autenticado: traer carrito desde la BD
+            $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
+        } else {
+            // Usuario invitado: traer carrito desde sesión
+            $cartItems = session()->get('cart', []);
+        }
+
+        return view('cart.index', compact('cartItems'));
     }
 
+    // Agregar producto al carrito
     public function addToCart(Request $request)
     {
-        $shoeId = $request->shoe_id;
-        $sizeId = $request->size_id;
-        $colorId = $request->color_id;
-        $quantity = $request->quantity;
+        $product = Product::findOrFail($request->product_id);
+        $quantity = $request->quantity ?? 1;
 
-        if (Auth::check()) {
-            // Usuario autenticado: guardar en la base de datos
-            $cart = Cart::updateOrCreate(
-                [
-                    'user_id' => Auth::id(),
-                    'shoe_id' => $shoeId,
-                    'size_id' => $sizeId,
-                    'color_id' => $colorId
-                ],
-                ['quantity' => $quantity]
+        if (auth()->check()) {
+            // Guardar en BD si el usuario está logueado
+            $cartItem = Cart::updateOrCreate(
+                ['user_id' => auth()->id(), 'product_id' => $product->id],
+                ['quantity' => \DB::raw("quantity + $quantity")]
             );
         } else {
-            // Usuario no autenticado: guardar en sesión
-            $cartItem = [
-                'shoe_id' => $shoeId,
-                'size_id' => $sizeId,
-                'color_id' => $colorId,
-                'quantity' => $quantity
-            ];
-    
+            // Guardar en sesión si el usuario no está autenticado
             $cart = session()->get('cart', []);
-            $cart[] = $cartItem;
+            if (isset($cart[$product->id])) {
+                $cart[$product->id]['quantity'] += $quantity;
+            } else {
+                $cart[$product->id] = [
+                    "name" => $product->name,
+                    "price" => $product->price,
+                    "quantity" => $quantity
+                ];
+            }
             session()->put('cart', $cart);
         }
-    
-        return response()->json(['message' => 'Producto añadido al carrito']);
+
+        return response()->json(['message' => 'Producto agregado al carrito']);
     }
 
-    public function mergeCartAfterLogin()
-{
-    if (!Auth::check()) {
-        return;
-    }
-
-    $user = Auth::user();
-    $cartItems = session()->get('cart', []);
-
-    foreach ($cartItems as $item) {
-        Cart::updateOrCreate(
-            [
-                'user_id' => $user->id,
-                'shoe_id' => $item['shoe_id'],
-                'size_id' => $item['size_id'],
-                'color_id' => $item['color_id']
-            ],
-            ['quantity' => $item['quantity']]
-        );
-    }
-
-    session()->forget('cart');
-}
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Eliminar producto del carrito
+    public function removeFromCart($id)
     {
-        //
+        if (auth()->check()) {
+            Cart::where('user_id', auth()->id())->where('product_id', $id)->delete();
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$id])) {
+                unset($cart[$id]);
+                session()->put('cart', $cart);
+            }
+        }
+
+        return response()->json(['message' => 'Producto eliminado del carrito']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Vaciar carrito
+    public function clearCart()
     {
-        //
-    }
+        if (auth()->check()) {
+            Cart::where('user_id', auth()->id())->delete();
+        } else {
+            session()->forget('cart');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(['message' => 'Carrito vaciado']);
     }
 }

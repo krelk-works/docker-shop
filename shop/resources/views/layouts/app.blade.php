@@ -84,7 +84,7 @@
                             </li>
                             <!-- CART -->
                             <li class="nav-item d-inline d-md-none">
-                                <a class="nav-link" href="{{ route('cart') }}">
+                                <a class="nav-link" href="#">
                                     Cart
                                 </a>
                             </li>
@@ -128,7 +128,7 @@
                             @if (Route::has('login'))
                                 <!-- Carrito -->
                                 <li class="nav-item">
-                                    <a class="nav-link position-relative offline-cart" href="{{ route('cart') }}"
+                                    <a class="nav-link position-relative offline-cart" href="#"
                                         aria-label="Cart" data-toggle="modal" data-target="#exampleModal">
                                         <!-- Ícono de carrito -->
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
@@ -165,7 +165,7 @@
                             </li>
                             <!-- CART -->
                             <li class="nav-item d-none d-md-inline" style="font-size: 1.2rem; color: black;">
-                                <a class="nav-link position-relative" href="{{ route('cart') }}" aria-label="Cart">
+                                <a class="nav-link position-relative" href="#" aria-label="Cart">
                                     <!-- Ícono SOLO visible en md o mayor -->
                                     <span>
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
@@ -199,6 +199,18 @@
                                         </a>
                                         <a class="dropdown-item" href="#">
                                             Usuarios
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('colors.index') }}">
+                                            Colores
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('sizes.index') }}">
+                                            Tallas
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('brands.index') }}">
+                                            Marcas
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('models.index') }}">
+                                            Modelos
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
