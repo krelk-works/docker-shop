@@ -94,9 +94,40 @@ class ShoeController extends Controller
         return redirect()->route('shoes.index')->with('success', 'Zapato creado con éxito.');
     }
 
-    public function show(Shoe $shoe)
+    // public function preview(Shoe $shoe)
+    // {
+    //     // Obtener colores disponibles para este zapato
+    //     $colors = Color::whereHas('shoes', function ($query) use ($shoe) {
+    //         $query->where('model_id', $shoe->model_id)
+    //             ->where('brand_id', $shoe->brand_id);
+    //     })->get();
+
+    //     // Obtener tallas disponibles para este zapato
+    //     $sizes = Size::whereHas('shoes', function ($query) use ($shoe) {
+    //         $query->where('model_id', $shoe->model_id)
+    //             ->where('brand_id', $shoe->brand_id);
+    //     })->get();
+
+    //     return view('shoes.preview', compact('shoe', 'colors', 'sizes'));
+    // }
+
+    public function preview(Shoe $shoe)
     {
-        return view('shoes.show', compact('shoe'));
+        $shoe = Shoe::with(['brand', 'model'])->findOrFail($shoe->id);
+
+        // Obtener colores disponibles para este zapato
+        $colors = Color::whereHas('shoes', function ($query) use ($shoe) {
+            $query->where('model_id', $shoe->model_id)
+                ->where('brand_id', $shoe->brand_id);
+        })->get();
+
+        // Obtener tallas disponibles para este zapato
+        $sizes = Size::whereHas('shoes', function ($query) use ($shoe) {
+            $query->where('model_id', $shoe->model_id)
+                ->where('brand_id', $shoe->brand_id);
+        })->get();
+
+        return view('shoes.preview', compact('shoe', 'colors', 'sizes'));
     }
 
     public function edit(Shoe $shoe)

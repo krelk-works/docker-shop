@@ -6,7 +6,7 @@ use App\Http\Controllers\ShoeController;
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
-// use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\MerchandisingController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\BrandController;
@@ -58,7 +58,7 @@ Route::get('/charts-data', [ChartController::class, 'getChartData']);
 // Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
 
 // Public shoes routes
-Route::get('/shoes/preview/{id}', [ShoeController::class, 'preview'])->name('shoes.preview');
+Route::get('/shoes/preview/{shoe}', [ShoeController::class, 'preview'])->name('shoes.preview');
 Route::post('/shoes/search', [ShoeController::class, 'search'])->name('shoes.search');
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -80,13 +80,14 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
 Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
 
-# Carrito de compra
-#Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
-// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-// Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-// Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-// Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+// Cart
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::post('/cart/import', [CartController::class, 'importLocalCart'])->name('cart.import');
 
 
 # Favoritos

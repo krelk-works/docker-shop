@@ -128,16 +128,18 @@
                             @if (Route::has('login'))
                                 <!-- Carrito -->
                                 <li class="nav-item">
-                                    <a class="nav-link position-relative offline-cart" href="#"
+                                    <a class="nav-link position-relative offline-cart" href="{{ route('cart.index') }}"
                                         aria-label="Cart" data-toggle="modal" data-target="#exampleModal">
                                         <!-- Ícono de carrito -->
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
                                         <!-- Badge -->
-                                        <span
-                                            class="position-absolute top-25 start-100 translate-middle 
-                                                     badge rounded-pill bg-danger">
-                                            3
-                                        </span>
+                                        @if ($cartItemCount > 0)
+                                            <span
+                                                class="position-absolute top-25 start-100 translate-middle 
+                                                     badge rounded-pill bg-danger" id="cart-count">
+                                                {{ $cartItemCount }}
+                                            </span>
+                                        @endif
                                     </a>
                                 </li>
 
@@ -165,18 +167,20 @@
                             </li>
                             <!-- CART -->
                             <li class="nav-item d-none d-md-inline" style="font-size: 1.2rem; color: black;">
-                                <a class="nav-link position-relative" href="#" aria-label="Cart">
+                                <a class="nav-link position-relative" href="{{ route('cart.index') }}" aria-label="Cart">
                                     <!-- Ícono SOLO visible en md o mayor -->
                                     <span>
                                         <i class="bi bi-cart" style="font-size: 1.2rem; color: black;"></i>
                                     </span>
 
                                     <!-- Badge siempre visible (tanto en móvil como en escritorio) -->
-                                    <span
-                                        class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger"
-                                        style="font-size: 0.75rem; padding: 2px 6px;">
-                                        3
-                                    </span>
+                                    @if ($cartItemCount > 0)
+                                        <span
+                                            class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger"
+                                            style="font-size: 0.75rem; padding: 2px 6px;" id="cart-count">
+                                            {{ $cartItemCount }}
+                                        </span>
+                                    @endif
                                 </a>
                             </li>
                             <!-- Dropdown usuario autenticado -->
@@ -232,6 +236,8 @@
         </nav>
 
         <main class="py-4">
+            <!-- Contenedor de la alerta (inicialmente oculto) -->
+            <div id="alert-container" class="position-fixed top-15 end-0 p-3" style="z-index: 1050;"></div>
             @yield('content')
 
             @guest
