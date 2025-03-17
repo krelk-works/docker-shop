@@ -8,19 +8,25 @@
             <h1 class="mb-4">{{ $category->name }}</h1>
             
             <div class="row">
-                @foreach($category->products as $product)
+                @foreach($category->products as $shoe)
                     <div class="col-md-4">
                         <div class="card mb-3">
-                            <img src="{{ asset('storage/products/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            <img src="{{ $shoe->image ? $shoe->image : asset('images/default-shoe.png') }}" class="card-img-top" alt="{{ $shoe->brand->name }} {{ $shoe->model->name }}">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                                <p class="card-text">{{ $product->description }}</p>
-                                <p class="card-text"><strong>Precio: </strong>€{{ $product->price }}</p>
-                                <a href="{{ route('shoes.preview', $product->id) }}" class="btn btn-primary">Ver más</a>
+                                <h5 class="card-title">{{ $shoe->brand->name }} - {{ $shoe->model->name }}</h5>
+                                <p class="card-text"><strong>Precio: </strong>€{{ number_format($shoe->price, 2) }}</p>
+                                <p class="card-text"><strong>Stock: </strong>{{ $shoe->stock }}</p>
+                                <a href="{{ route('shoes.preview', $shoe->id) }}" class="btn btn-primary">Ver más</a>
                             </div>
                         </div>
                     </div>
                 @endforeach
+
+                @if ($category->products->isEmpty())
+                    <div class="alert alert-warning" role="alert">
+                        No hay productos en esta categoría.
+                    </div>
+                @endif
             </div>
         </div>
     @else
@@ -32,13 +38,3 @@
         </div>
     @endif
 @endsection
-
-{{-- 
-<style>
-    .card {
-        width: 80%;
-        margin: 0 auto;
-    }
-</style> --}}
-
-{{-- NOTA: Este código hacía que la búsqueda del navbar se desplazara hacía arriba --}}

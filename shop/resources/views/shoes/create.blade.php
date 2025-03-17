@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h2>Añadir Nuevo Zapato</h2>
-    <!-- Mostrar el error en caso de no poder crear la talla -->
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <h4>Error</h4>
@@ -14,6 +14,7 @@
             </ul>
         </div>
     @endif
+
     <form action="{{ route('shoes.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -36,8 +37,8 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Categoria</label>
-            <select name="model_id" class="form-control">
+            <label class="form-label">Categoría</label>
+            <select name="category_id" class="form-control">
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach

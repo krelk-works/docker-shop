@@ -26,10 +26,34 @@
                     </td>
                     <td>
                         <a href="{{ route('colors.edit', $color->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                        <form action="{{ route('colors.destroy', $color->id) }}" method="POST" style="display:inline;">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que quieres eliminar este color?')">Eliminar</button>
-                        </form>
+                        
+                        <!-- Botón para abrir el modal -->
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $color->id }}">
+                            Eliminar
+                        </button>
+
+                        <!-- Modal de Confirmación -->
+                        <div class="modal fade" id="deleteModal{{ $color->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $color->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel{{ $color->id }}">Confirmar Eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Seguro que quieres eliminar el color <strong>{{ $color->name }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{ route('colors.destroy', $color->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- Fin del modal -->
                     </td>
                 </tr>
             @endforeach

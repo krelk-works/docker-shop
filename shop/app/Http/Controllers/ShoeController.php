@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ShoeController extends Controller
 {
@@ -31,7 +32,14 @@ class ShoeController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos de entrada
+        // Asegurar que los checkbox envíen valores correctos
+        $request->merge([
+            'featured' => $request->has('featured'),
+            'active' => $request->has('active'),
+            'main' => $request->has('main'),
+        ]);
+
+        // Validar datos
         $request->validate([
             'brand_id' => 'required|exists:brands,id',
             'model_id' => 'required|exists:models,id',
@@ -39,7 +47,7 @@ class ShoeController extends Controller
             'category_id' => 'required|exists:categories,id',
             'color_id' => 'required|exists:colors,id',
             'size_id' => 'required|exists:sizes,id',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'featured' => 'boolean',
             'discount' => 'integer|min:0|max:100',
             'active' => 'boolean',
@@ -62,12 +70,29 @@ class ShoeController extends Controller
                 ->withErrors(['error' => 'Ya existe un zapato con esta combinación de marca, modelo, categoría, color y talla.']);
         }
 
-        // Crear el zapato
-        Shoe::create($request->all());
+        // Subir imagen y guardar la URL correcta
+        $imageUrl = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('shoes', $imageName, 'public');
+
+            // Generar la URL correcta
+            $imageUrl = asset('storage/' . $imagePath);
+        }
+
+        // Si se ha seleccionado como main habrá que desmarcar todos los calzados que tengan la misma marca y modelo
+        if ($request->main) {
+            Shoe::where('brand_id', $request->brand_id)
+                ->where('model_id', $request->model_id)
+                ->update(['main' => false]);
+        }
+
+        // Crear el zapato con la URL de la imagen
+        Shoe::create(array_merge($request->all(), ['image' => $imageUrl]));
 
         return redirect()->route('shoes.index')->with('success', 'Zapato creado con éxito.');
     }
-
 
     public function show(Shoe $shoe)
     {
@@ -87,6 +112,12 @@ class ShoeController extends Controller
 
     public function update(Request $request, Shoe $shoe)
     {
+        $request->merge([
+            'featured' => $request->has('featured'),
+            'active' => $request->has('active'),
+            'main' => $request->has('main'),
+        ]);
+
         $request->validate([
             'brand_id' => 'required|exists:brands,id',
             'model_id' => 'required|exists:models,id',
@@ -94,7 +125,7 @@ class ShoeController extends Controller
             'category_id' => 'required|exists:categories,id',
             'color_id' => 'required|exists:colors,id',
             'size_id' => 'required|exists:sizes,id',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'featured' => 'boolean',
             'discount' => 'integer|min:0|max:100',
             'active' => 'boolean',
@@ -102,7 +133,30 @@ class ShoeController extends Controller
             'stock' => 'integer|min:0'
         ]);
 
-        $shoe->update($request->all());
+        // Verificar si se ha subido una nueva imagen
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen anterior si existe
+            if ($shoe->image) {
+                // Extraer la ruta relativa del archivo desde la URL completa
+                $parsedUrl = parse_url($shoe->image, PHP_URL_PATH); // Extrae solo el path de la URL
+                $relativePath = str_replace('/storage/', '', $parsedUrl); // Quita el prefijo "/storage/"
+
+                // Intentar eliminar la imagen anterior del almacenamiento
+                Storage::disk('public')->delete($relativePath);
+            }
+
+            // Guardar la nueva imagen
+            $image = $request->file('image');
+            $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('shoes', $imageName, 'public');
+
+            // Generar la nueva URL completa
+            $imageUrl = asset('storage/shoes/' . $imageName);
+            $shoe->image = $imageUrl;
+        }
+
+        // Actualizar el zapato con los nuevos valores
+        $shoe->update($request->except('image') + ['image' => $shoe->image]);
 
         return redirect()->route('shoes.index')->with('success', 'Zapato actualizado con éxito.');
     }

@@ -29,7 +29,7 @@
                 <tr>
                     <td>
                         @if($shoe->image)
-                            <img src="{{ asset('storage/' . $shoe->image) }}" width="50" height="50">
+                            <img src="{{ $shoe->image }}" width="50" height="50">
                         @else
                             No Image
                         @endif
