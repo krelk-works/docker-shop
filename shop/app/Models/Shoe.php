@@ -1,37 +1,46 @@
 <?php
 
 namespace App\Models;
-use App\Models\Category;
-
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Shoe extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'category_id', 'description', 'image', 'featured', 'discount'];
+    protected $fillable = [
+        'brand_id', 'model_id', 'price', 'category_id', 'color_id', 'size_id', 
+        'image', 'featured', 'discount', 'active', 'main', 'stock'
+    ];
 
-    protected $table = "shoes";
+    // Relación con la Marca
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 
-    public function category(): BelongsTo {
+    // Relación con el Modelo de zapato
+    public function model()
+    {
+        return $this->belongsTo(ShoeModel::class);
+    }
+
+    // Relación con la Categoría
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function colors(): BelongsToMany {
-        return $this->belongsToMany(Color::class)->withTimestamps();
+    // Relación con el Color
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
     }
 
-    public function sizes(): BelongsToMany {
-        return $this->belongsToMany(Size::class)->withPivot('stock')->withTimestamps();
+    // Relación con la Talla
+    public function size()
+    {
+        return $this->belongsTo(Size::class);
     }
-
-    public function orderItems()
-{
-    return $this->hasMany(OrderItem::class, 'product_id');
-}
-    
 }

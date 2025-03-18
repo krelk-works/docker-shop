@@ -1,126 +1,184 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
+use App\Models\Shoe;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Mostrar carrito
     public function index()
     {
-        //
-        return view('cart.index');
+        if (auth()->check()) {
+            // Importar automáticamente el carrito local si existe
+            $this->importLocalCart();
+
+            // Usuario autenticado: traer carrito desde la BD
+            $cartItems = Cart::where('user_id', auth()->id())->with('shoe')->get();
+        } else {
+            // Usuario invitado: traer carrito desde sesión
+            $cartItems = session()->get('cart', []);
+        }
+
+        return view('cart.index', compact('cartItems'));
     }
 
+    // Obtener la cantidad total de productos en el carrito
+    public function getCartItemCount()
+    {
+        if (auth()->check()) {
+            return Cart::where('user_id', auth()->id())->sum('quantity');
+        } else {
+            $cart = session()->get('cart', []);
+            return array_sum(array_column($cart, 'quantity'));
+        }
+    }
+
+    // Agregar zapato al carrito
     public function addToCart(Request $request)
     {
-        $shoeId = $request->shoe_id;
-        $sizeId = $request->size_id;
-        $colorId = $request->color_id;
-        $quantity = $request->quantity;
+        Log::info($request);
+        $shoe = Shoe::findOrFail($request->product_id);
+        $quantity = $request->quantity ?? 1;
 
-        if (Auth::check()) {
-            // Usuario autenticado: guardar en la base de datos
-            $cart = Cart::updateOrCreate(
-                [
-                    'user_id' => Auth::id(),
-                    'shoe_id' => $shoeId,
-                    'size_id' => $sizeId,
-                    'color_id' => $colorId
-                ],
-                ['quantity' => $quantity]
-            );
+        if (auth()->check()) {
+            // Buscar si el zapato ya está en el carrito
+            $cartItem = Cart::where('user_id', auth()->id())->where('shoe_id', $shoe->id)->first();
+        
+            if ($cartItem) {
+                // Si ya existe, incrementar la cantidad
+                $cartItem->quantity += $quantity;
+                $cartItem->save();
+            } else {
+                // Si no existe, crearlo con la cantidad inicial
+                Cart::create([
+                    'user_id' => auth()->id(),
+                    'shoe_id' => $shoe->id,
+                    'quantity' => $quantity,
+                ]);
+            }
         } else {
-            // Usuario no autenticado: guardar en sesión
-            $cartItem = [
-                'shoe_id' => $shoeId,
-                'size_id' => $sizeId,
-                'color_id' => $colorId,
-                'quantity' => $quantity
-            ];
-    
+            // Carrito en sesión
             $cart = session()->get('cart', []);
-            $cart[] = $cartItem;
+            if (isset($cart[$shoe->id])) {
+                $cart[$shoe->id]['quantity'] += $quantity;
+            } else {
+                $cart[$shoe->id] = [
+                    "name" => $shoe->brand->name . ' ' . $shoe->model->name,
+                    "price" => $shoe->price,
+                    "quantity" => $quantity,
+                    "image" => $shoe->image
+                ];
+            }
             session()->put('cart', $cart);
         }
-    
-        return response()->json(['message' => 'Producto añadido al carrito']);
+        
+
+        return response()->json(['message' => 'Zapato agregado al carrito']);
     }
 
-    public function mergeCartAfterLogin()
-{
-    if (!Auth::check()) {
-        return;
-    }
 
-    $user = Auth::user();
-    $cartItems = session()->get('cart', []);
-
-    foreach ($cartItems as $item) {
-        Cart::updateOrCreate(
-            [
-                'user_id' => $user->id,
-                'shoe_id' => $item['shoe_id'],
-                'size_id' => $item['size_id'],
-                'color_id' => $item['color_id']
-            ],
-            ['quantity' => $item['quantity']]
-        );
-    }
-
-    session()->forget('cart');
-}
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Eliminar zapato del carrito
+    public function removeFromCart($id)
     {
-        //
+        if (auth()->check()) {
+            Cart::where('user_id', auth()->id())->where('shoe_id', $id)->delete();
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$id])) {
+                unset($cart[$id]);
+                session()->put('cart', $cart);
+            }
+        }
+
+        // return response()->json(['message' => 'Zapato eliminado del carrito']);
+        return redirect()->route('cart.index')->with('success', 'Zapato eliminado del carrito.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Vaciar carrito
+    public function clearCart()
     {
-        //
+        if (auth()->check()) {
+            Cart::where('user_id', auth()->id())->delete();
+        } else {
+            session()->forget('cart');
+        }
+
+        // return response()->json(['message' => 'Carrito vaciado']);
+        return redirect()->route('cart.index')->with('success', 'Carrito vaciado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function updateQuantity(Request $request)
     {
-        //
+        $shoeId = $request->product_id;
+        $action = $request->action;
+
+        if (auth()->check()) {
+            $cartItem = Cart::where('user_id', auth()->id())->where('shoe_id', $shoeId)->first();
+
+            if ($cartItem) {
+                if ($action === 'increase') {
+                    $cartItem->quantity += 1;
+                } elseif ($action === 'decrease' && $cartItem->quantity > 1) {
+                    $cartItem->quantity -= 1;
+                }
+                $cartItem->save();
+            }
+        } else {
+            $cart = session()->get('cart', []);
+
+            if (isset($cart[$shoeId])) {
+                if ($action === 'increase') {
+                    $cart[$shoeId]['quantity'] += 1;
+                } elseif ($action === 'decrease' && $cart[$shoeId]['quantity'] > 1) {
+                    $cart[$shoeId]['quantity'] -= 1;
+                }
+                session()->put('cart', $cart);
+            }
+        }
+
+        return response()->json(['success' => true]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    private function importLocalCart()
     {
-        //
+        $localCart = session()->get('cart', []);
+
+        if (!empty($localCart)) {
+            foreach ($localCart as $key => $item) {
+                // Verificar si el zapato existe en la base de datos antes de importarlo
+                $shoe = Shoe::find($key);
+                if ($shoe) {
+                    // Buscar si el usuario ya tiene este zapato en su carrito
+                    $cartItem = Cart::where('user_id', auth()->id())->where('shoe_id', $shoe->id)->first();
+
+                    if ($cartItem) {
+                        // Si el zapato ya está en el carrito, aumentar la cantidad
+                        $cartItem->quantity += $item['quantity'];
+                        $cartItem->save();
+                    } else {
+                        // Si no existe en el carrito, agregarlo
+                        Cart::create([
+                            'user_id' => auth()->id(),
+                            'shoe_id' => $shoe->id,
+                            'quantity' => $item['quantity'],
+                        ]);
+                    }
+                }
+            }
+
+            // Eliminar el carrito local después de la importación
+            session()->forget('cart');
+
+            // Mensaje de éxito en la sesión flash
+            session()->flash('success', 'Se ha importado tu carrito local.');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 }

@@ -1,62 +1,80 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // Aquí jQuery YA está disponible, porque app.js se inyecta en <head> o antes de </body>
-  // si usas la directiva @vite correctamente.
-  $(function() {
-    console.log("Cart loaded ... [jQuery]");
-
-    // Local storage variable for cart
-    let cart = localStorage.getItem("cart");
-    if (!cart) {
-      cart = [];
-    } else {
-      cart = JSON.parse(cart);
+document.addEventListener("DOMContentLoaded", function () {
+    function showCartAlert(message, type = "success") {
+        // Crear un ID único para cada alerta
+        let alertId = "alert-" + new Date().getTime();
+    
+        // Crear la alerta con un botón de cierre
+        let alertHtml = `
+            <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+    
+        // Agregar la alerta al contenedor
+        $("#alert-container").append(alertHtml);
+    
+        // Eliminar la alerta automáticamente después de 3 segundos
+        setTimeout(() => {
+            $("#" + alertId).fadeOut(300, function () {
+                $(this).remove();
+            });
+        }, 3000);
     }
 
-    /**
-     * Function to add product to cart
-     * @param {int} productId
-     * @param {string} productName
-     * @param {float} price
-     * @param {int} quantity
-     * @returns {void}
-     */
-    function addToCart(productId, productName, price, quantity) {
-      let product = {
-        productId: productId,
-        productName: productName,
-        price: price,
-        quantity: quantity
-      };
-      cart.push(product);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+        button.addEventListener("click", function () {
+            let productId = this.dataset.id;
+            let quantity = 1;
 
-    /**
-     * Function to remove product from cart
-     * @param {int} productId
-     * @returns {void}
-     */
-    function removeFromCart(productId) {
-      cart = cart.filter(product => product.productId !== productId);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
+            console.log(productId);
+            console.log(quantity);
 
-    /** Function to add or remove product quantity, if quantity is equal to 0 remove the preduct with removeFromCart function */
-    function updateQuantity(productId, quantity) {
-      cart = cart.map(product => {
-        if (product.productId === productId) {
-          product.quantity = quantity;
-        }
-        return product;
-      });
-      cart = cart.filter(product => product.quantity > 0);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
+            showCartAlert("Producto agregado correctamente al carrito.");
 
-    // Click event listener on offline-cart class
-    // const offlineCart = document.querySelector(".offline-cart");
-    // offlineCart.addEventListener("click", function() {
-    //   console.log("Offline cart clicked ...");
-    // });
-  });
+            fetch("/cart/add", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ product_id: productId, quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // alert(data.message);
+                const currentBadgeValue = $(".badge").text().trim(); // Limpia espacios al inicio y fin
+                // console.log("Badge value: ", currentBadgeValue);
+
+                $(".badge").text(parseInt(currentBadgeValue) + parseInt(quantity));
+                
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    });
+
+    document.querySelectorAll(".update-quantity").forEach(button => {
+        button.addEventListener("click", function () {
+            let productId = this.dataset.id;
+            let action = this.dataset.action;
+
+            fetch("/cart/update", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ product_id: productId, action: action })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); // Recargar la página para actualizar el carrito
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    });
 });
