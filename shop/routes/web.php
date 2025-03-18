@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\InvoiceController;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
@@ -29,6 +30,9 @@ Route::get('/navbar', function () {
 // Route::get('/home', function () {
 //     return view('home');
 // });
+
+//pdf
+Route::get('/invoice/{order_id}', [InvoiceController::class, 'generateInvoice'])->name('invoice.download');
 
 
 //merchandising
