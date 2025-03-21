@@ -49,9 +49,8 @@ Route::post('/merchandising', [MerchandisingController::class, 'store'])->name('
 Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('merchandising.index');
 
 //drag and drop
-Route::get('/game', [GameController::class, 'index'])->name('game.index');
 Route::post('/game', [GameController::class, 'store'])->name('game.store');
-
+Route::get('/game', [GameController::class, 'index'])->name('game.index');
 
 
 //grafico
