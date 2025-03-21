@@ -14,6 +14,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ShoeModelController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\GameController;
+
 
 Route::get('/category/create', [CategoryController::class, 'create'])->name('altaCategoria');
 
@@ -45,6 +47,10 @@ Route::get('/merchandising', function () {
 });
 Route::post('/merchandising', [MerchandisingController::class, 'store'])->name('merchandising.store');
 Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('merchandising.index');
+
+//drag and drop
+Route::get('/game', [GameController::class, 'index'])->name('game.index');
+Route::post('/game', [GameController::class, 'store'])->name('game.store');
 
 
 
