@@ -197,4 +197,10 @@ class ShoeController extends Controller
         $shoe->delete();
         return redirect()->route('shoes.index')->with('success', 'Zapato eliminado con éxito.');
     }
+
+  
+
+
+
+
 }

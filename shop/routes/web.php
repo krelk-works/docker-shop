@@ -51,19 +51,6 @@ Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('m
 //grafico
 Route::get('/chart', function () {
     return view('charts');
-<<<<<<< HEAD
-})->name('chart.view');
-Route::get('/chart-data', [ChartController::class, 'getChartData'])->name('chart.data');
-Route::resource('shoes', ShoeController::class);
-
-
-Route::get('/shoes/{id}', [ShoeController::class, 'show'])->name('shoes.show');
-Route::post('/shoes/{id}/deactivate', [ShoeController::class, 'deactivate'])->name('shoes.deactivate');
-Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('shoes.edit');
-Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
-Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
-Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
-=======
 })->name('charts.view');
 Route::get('/charts-data', [ChartController::class, 'getChartData']);
 
@@ -73,7 +60,6 @@ Route::get('/charts-data', [ChartController::class, 'getChartData']);
 // Route::post('/shoes/{id}/add-size', [ShoeController::class, 'addSize'])->name('shoes.addSize');
 // Route::post('/shoes/{id}/toggle', [ShoeController::class, 'toggleStatus'])->name('shoes.toggle');
 // Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
->>>>>>> refs/remotes/origin/main
 
 // Public shoes routes
 Route::get('/shoes/preview/{shoe}', [ShoeController::class, 'preview'])->name('shoes.preview');

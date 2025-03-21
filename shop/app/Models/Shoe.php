@@ -14,6 +14,8 @@ class Shoe extends Model
         'image', 'featured', 'discount', 'active', 'main', 'stock'
     ];
 
+   
+
     // Relación con la Marca
     public function brand()
     {

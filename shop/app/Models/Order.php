@@ -33,7 +33,8 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class);  // Asumiendo que tienes un modelo OrderItem
+        //sino quitar el 'order_id'
+        return $this->hasMany(OrderItem::class, 'order_id');  // Asumiendo que tienes un modelo OrderItem
     }
 
 

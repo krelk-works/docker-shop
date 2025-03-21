@@ -7,74 +7,54 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
-            padding: 0;
+            margin: 0;
+            padding: 20px;
             color: #333;
         }
-        .container {
-            width: 800px;
+        .invoice-container {
+            max-width: 800px;
             margin: auto;
             padding: 20px;
-            border: 2px solid #ddd;
+            border: 1px solid #ddd;
             border-radius: 10px;
+            background: #fff;
         }
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #F4F1ED;
-            padding: 20px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
         }
         .header img {
-            max-width: 80px;
+            max-width: 150px;
         }
-        .invoice-number {
-            background: #fff;
-            padding: 5px 10px;
-            border: 1px solid #333;
-            display: inline-block;
-            margin-top: 10px;
+        .invoice-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
         }
-        .section {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
+        .details {
+            margin-bottom: 20px;
         }
-        .box {
-            width: 48%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background: #F9F9F9;
+        .details p {
+            margin: 5px 0;
         }
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
         .table th, .table td {
-            border: 1px solid #ddd;
             padding: 10px;
+            border: 1px solid #ddd;
             text-align: left;
         }
         .table th {
-            background: #222;
+            background: #007BFF;
             color: #fff;
         }
         .total {
             text-align: right;
-            margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
-        }
-        .payment-info {
-            margin-top: 30px;
-            padding: 15px;
-            background: #F9F9F9;
-            border: 1px solid #ddd;
+            margin-top: 20px;
         }
         .footer {
             text-align: center;
@@ -86,44 +66,34 @@
 </head>
 <body>
 
-    <div class="container">
-        <!-- ENCABEZADO -->
+    <div class="invoice-container">
+        <!-- Encabezado -->
         <div class="header">
-            <h1>FACTURA</h1>
-            <img src="{{ public_path('img/logo.png') }}" alt="Logo">
-        </div>
-        <p class="invoice-number">Nº {{ $order->id }}</p>
-
-        <!-- DATOS DEL CLIENTE Y EMPRESA -->
-        <div class="section">
-            <div class="box">
-                <p><strong>DATOS DEL CLIENTE</strong></p>
-                <p>{{ $order->user->name }}</p>
-                <p>{{ $order->user->email }}</p>
-                <p>{{ $order->user->address }}</p>
-            </div>
-            <div class="box">
-                <p><strong>DATOS DE LA EMPRESA</strong></p>
-                <p>Tu Tienda Online</p>
-                <p>contacto@tutienda.com</p>
-                <p>Dirección de la empresa</p>
-            </div>
+            <img src="{{ public_path('img/logo.png') }}" alt="Logo de la tienda">  
+            <p class="invoice-title">Factura #{{ $order->id }}</p>
         </div>
 
-        <!-- TABLA DE PRODUCTOS -->
+        <!-- Datos del Cliente -->
+        <div class="details">
+            <p><strong>Fecha:</strong> {{ $order->created_at->format('d/m/Y') }}</p>
+            <p><strong>Cliente:</strong> {{ $order->user->name }}</p>
+            <p><strong>Email:</strong> {{ $order->user->email }}</p>
+        </div>
+
+        <!-- Tabla de productos -->
         <table class="table">
             <thead>
                 <tr>
-                    <th>Detalle</th>
+                    <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Precio</th>
+                    <th>Precio Unitario</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($order->items as $item)
                 <tr>
-                    <td>{{ $item->shoe->name }}</td>
+                    <td>{{ $item->shoe->model_id }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ number_format($item->shoe->price, 2) }} €</td>
                     <td>{{ number_format($item->shoe->price * $item->quantity, 2) }} €</td>
@@ -132,22 +102,13 @@
             </tbody>
         </table>
 
-        <!-- TOTAL -->
-        <p class="total">IVA (21%): {{ number_format($totalPrice * 0.21, 2) }} €</p>
-        <p class="total">TOTAL: {{ number_format($totalPrice * 1.21, 2) }} €</p>
+        <!-- Total de la factura -->
+        <p class="total">Total a pagar: {{ number_format($totalPrice, 2) }} €</p>
 
-        <!-- INFORMACIÓN DE PAGO -->
-        <div class="payment-info">
-            <p><strong>INFORMACIÓN DE PAGO</strong></p>
-            <p>Transferencia bancaria</p>
-            <p>Banco: Nombre del Banco</p>
-            <p>Titular: Tu Tienda Online</p>
-            <p>Número de cuenta: XXXX XXXX XXXX XXXX</p>
-        </div>
-
-        <!-- PIE DE PÁGINA -->
+        <!-- Pie de página -->
         <div class="footer">
-            <p>www.tutienda.com</p>
+            <p>Gracias por su compra.</p>
+            <p>Para soporte, contáctenos en <strong>soporte@tutienda.com</strong></p>
         </div>
     </div>
 

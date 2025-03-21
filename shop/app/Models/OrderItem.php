@@ -21,6 +21,15 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Shoe::class, 'product_id');
     }
+
+    public function shoeModel()
+    {
+        return $this->belongsTo(ShoeModel::class, 'model_id', 'id');
+    }
+
+
+
+
 }
 
 
