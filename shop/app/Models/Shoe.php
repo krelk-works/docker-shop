@@ -25,7 +25,7 @@ class Shoe extends Model
     // Relación con el Modelo de zapato
     public function model()
     {
-        return $this->belongsTo(ShoeModel::class);
+        return $this->belongsTo(ShoeModel::class, 'model_id');  // Asegúrate de que este es el nombre correcto de la relación
     }
 
     // Relación con la Categoría

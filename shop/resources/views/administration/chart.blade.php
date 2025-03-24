@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1>Ejemplo de Gráfico de Ventas en Canvas (Barras)</h1>
+    <h1>Gráfico de Ventas en Canvas (Barras)</h1>
 
     <!-- Canvas donde se renderiza el gráfico -->
     <canvas id="graficoVentas" width="600" height="300"></canvas>
@@ -101,6 +101,104 @@
         ctx.fillText(venta.beneficio, x + anchoBarra/2, y - 5);
     });
 </script>
+
+<div class="container mt-5">
+    <h2>Grafico Stock</h2>
+    <canvas id="stockChart" width="600" height="800"></canvas>
+</div>
+
+
+<script>
+  // Realizamos la petición a la API para obtener los datos
+  fetch('http://localhost:8000/api/stock-chart')
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('stockChart').getContext('2d');
+
+      // Extraemos los nombres de los productos y el stock
+      const labels = data.map(item => item.model.name);  // Nombre del modelo
+      const stockValues = data.map(item => item.stock);  // Valores de stock
+
+      // Dimensiones del gráfico
+      const canvasWidth = 600;
+      const canvasHeight = 400;
+      const barWidth = 40;
+      const barSpacing = 50; // Espaciado entre las barras
+
+      // Escala Y (basada en el valor máximo de stock)
+      const maxStock = Math.max(...stockValues);
+      const scaleY = canvasHeight / maxStock;
+
+      // Limpiamos el canvas antes de dibujar
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      // Dibujamos el fondo del gráfico
+      ctx.fillStyle = '#f4f4f9'; // Color de fondo gris claro
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+      // Ajustar la posición de las barras para que no queden cortadas
+      const offsetX = 30;  // Mover las barras a la izquierda para que no se corten
+
+      // Dibujamos las barras
+      stockValues.forEach((stock, index) => {
+        const x = offsetX + index * (barWidth + barSpacing); // Ajustamos la posición en X
+        const y = canvasHeight - stock * scaleY;
+        const barHeight = stock * scaleY;
+
+        // Establecemos el color de la barra y el borde
+        ctx.fillStyle = 'rgba(75, 192, 192, 0.6)';
+        ctx.strokeStyle = 'rgba(0, 123, 255, 1)'; // Color del borde
+        ctx.lineWidth = 2;
+
+        // Dibujamos la barra
+        ctx.fillRect(x, y, barWidth, barHeight);
+        ctx.strokeRect(x, y, barWidth, barHeight); // Dibuja el borde de la barra
+
+        // Dibujamos el texto (nombre del producto) debajo de cada barra
+        ctx.fillStyle = 'black';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(labels[index], x + barWidth / 2, canvasHeight - 10);  // Texto debajo de la barra
+
+        // Mostrar el stock exacto encima de la barra
+        ctx.fillText(stock, x + barWidth / 2, y - 5);  // Mostrar el stock sobre la barra
+      });
+
+      // Dibujar la línea de la base del gráfico (eje X)
+      ctx.beginPath();
+      ctx.moveTo(0, canvasHeight);
+      ctx.lineTo(canvasWidth, canvasHeight);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Dibujar la línea del eje Y
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, canvasHeight);
+      ctx.stroke();
+
+      // Añadir etiquetas al eje Y
+      ctx.fillStyle = 'black';
+      ctx.font = '12px Arial';
+      ctx.fillText('Stock', 20, 20); // Etiqueta de Y
+
+      // Añadir título al gráfico
+      ctx.fillStyle = 'black';
+      ctx.font = '16px Arial';
+      ctx.fillText('Gráfico de Stock de Productos', canvasWidth / 2, 30); // Título del gráfico
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
 

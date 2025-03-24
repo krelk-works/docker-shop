@@ -14,6 +14,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body { text-align: center; font-family: Arial, sans-serif; }
+            h1{
+                font-size: 40px;
+                font-weight: bold;
+            }
         .game-container {
             display: flex;
             justify-content: center;
@@ -26,7 +30,7 @@
             cursor: grab;
         }
         .box {
-            width: 170px;
+            width: 190px;
             height: 120px;
             display: inline-block;
             background-size: cover;
@@ -93,9 +97,15 @@
         });
 
         function saveResult() {
-            let prizes = ["10% Discount", "20% Discount", "Free Product"];
+            let prizes = ["10% de Descuento", "20% de Descuento", "Producto gratis"];
             let prize = prizes[Math.floor(Math.random() * prizes.length)];
 
+            // Mostrar el modal de inmediato con el premio
+            document.getElementById('prizeMessage').innerText = `¡Has ganado: ${prize}!`;
+            let prizeModal = new bootstrap.Modal(document.getElementById('prizeModal'));
+            prizeModal.show();
+
+            // Realizar la solicitud fetch en segundo plano
             fetch("{{ route('game.store') }}", {
                 method: "POST",
                 headers: {
@@ -107,14 +117,6 @@
             .then(response => response.json())
             .then(data => {
                 console.log("Prize registered:", data);
-
-                // Actualizar el contenido del modal con el premio
-                document.getElementById('prizeMessage').innerText = `¡Has ganado: ${prize}!`;
-
-                // Mostrar el modal
-                console.log("Mostrando el modal...");
-                let prizeModal = new bootstrap.Modal(document.getElementById('prizeModal'));
-                prizeModal.show();
             })
             .catch(error => console.error("Error:", error));
         }

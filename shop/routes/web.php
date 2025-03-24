@@ -52,6 +52,9 @@ Route::get('/merchandising', [MerchandisingController::class, 'index'])->name('m
 Route::post('/game', [GameController::class, 'store'])->name('game.store');
 Route::get('/game', [GameController::class, 'index'])->name('game.index');
 
+//grafico stock
+Route::get('/api/stock-chart', [ShoeController::class, 'stockChart']);
+
 
 //grafico
 Route::get('/chart', function () {

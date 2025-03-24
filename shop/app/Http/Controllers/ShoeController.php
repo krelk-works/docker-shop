@@ -191,6 +191,21 @@ class ShoeController extends Controller
 
         return redirect()->route('shoes.index')->with('success', 'Zapato actualizado con éxito.');
     }
+    
+    public function stockChart()
+    {
+        $shoes = Shoe::with('model')->orderBy('stock', 'asc')->limit(5)->get();
+        return response()->json($shoes);
+    }
+    
+
+    
+
+
+
+
+
+
 
     public function destroy(Shoe $shoe)
     {
