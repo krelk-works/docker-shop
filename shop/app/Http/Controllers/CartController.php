@@ -10,24 +10,39 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    // Mostrar carrito
+    /**
+     * Verifica si el usuario está autenticado.
+     *
+     * @return bool
+     * @private
+     */
+    private function isUserAuthenticated()
+    {
+        return auth()->check();
+    }
+
+    /**
+     * Muestra la vista del carrito con los productos agregados.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         if (auth()->check()) {
-            // Importar automáticamente el carrito local si existe
             $this->importLocalCart();
-
-            // Usuario autenticado: traer carrito desde la BD
             $cartItems = Cart::where('user_id', auth()->id())->with('shoe')->get();
         } else {
-            // Usuario invitado: traer carrito desde sesión
             $cartItems = session()->get('cart', []);
         }
 
         return view('cart.index', compact('cartItems'));
     }
 
-    // Obtener la cantidad total de productos en el carrito
+    /**
+     * Obtiene la cantidad total de productos en el carrito.
+     *
+     * @return int
+     */
     public function getCartItemCount()
     {
         if (auth()->check()) {
@@ -38,23 +53,25 @@ class CartController extends Controller
         }
     }
 
-    // Agregar zapato al carrito
+    /**
+     * Agrega un zapato al carrito.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addToCart(Request $request)
     {
         Log::info($request);
         $shoe = Shoe::findOrFail($request->product_id);
         $quantity = $request->quantity ?? 1;
 
-        if (auth()->check()) {
-            // Buscar si el zapato ya está en el carrito
+        if ($this->isUserAuthenticated()) {
             $cartItem = Cart::where('user_id', auth()->id())->where('shoe_id', $shoe->id)->first();
         
             if ($cartItem) {
-                // Si ya existe, incrementar la cantidad
                 $cartItem->quantity += $quantity;
                 $cartItem->save();
             } else {
-                // Si no existe, crearlo con la cantidad inicial
                 Cart::create([
                     'user_id' => auth()->id(),
                     'shoe_id' => $shoe->id,
@@ -62,7 +79,6 @@ class CartController extends Controller
                 ]);
             }
         } else {
-            // Carrito en sesión
             $cart = session()->get('cart', []);
             if (isset($cart[$shoe->id])) {
                 $cart[$shoe->id]['quantity'] += $quantity;
@@ -76,13 +92,16 @@ class CartController extends Controller
             }
             session()->put('cart', $cart);
         }
-        
 
         return response()->json(['message' => 'Zapato agregado al carrito']);
     }
 
-
-    // Eliminar zapato del carrito
+    /**
+     * Elimina un zapato del carrito.
+     *
+     * @param int $id ID del zapato
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function removeFromCart($id)
     {
         if (auth()->check()) {
@@ -95,11 +114,14 @@ class CartController extends Controller
             }
         }
 
-        // return response()->json(['message' => 'Zapato eliminado del carrito']);
         return redirect()->route('cart.index')->with('success', 'Zapato eliminado del carrito.');
     }
 
-    // Vaciar carrito
+    /**
+     * Vacía completamente el carrito del usuario.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function clearCart()
     {
         if (auth()->check()) {
@@ -108,22 +130,30 @@ class CartController extends Controller
             session()->forget('cart');
         }
 
-        // return response()->json(['message' => 'Carrito vaciado']);
         return redirect()->route('cart.index')->with('success', 'Carrito vaciado correctamente.');
     }
 
+    /**
+     * Actualiza la cantidad de un zapato en el carrito (aumentar o disminuir).
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateQuantity(Request $request)
     {
         $shoeId = $request->product_id;
         $action = $request->action;
 
-        if (auth()->check()) {
+        if ($this->isUserAuthenticated()) {
             $cartItem = Cart::where('user_id', auth()->id())->where('shoe_id', $shoeId)->first();
 
+            $isIncreasing = $action === 'increase';
+            $isDecreasing = $action === 'decrease' && $cartItem->quantity > 1;
+
             if ($cartItem) {
-                if ($action === 'increase') {
+                if ($isIncreasing) {
                     $cartItem->quantity += 1;
-                } elseif ($action === 'decrease' && $cartItem->quantity > 1) {
+                } elseif ($isDecreasing) {
                     $cartItem->quantity -= 1;
                 }
                 $cartItem->save();
@@ -132,11 +162,15 @@ class CartController extends Controller
             $cart = session()->get('cart', []);
 
             if (isset($cart[$shoeId])) {
-                if ($action === 'increase') {
+                $isIncreasing = $action === 'increase';
+                $isDecreasing = $action === 'decrease' && $cart[$shoeId]['quantity'] > 1;
+
+                if ($isIncreasing) {
                     $cart[$shoeId]['quantity'] += 1;
-                } elseif ($action === 'decrease' && $cart[$shoeId]['quantity'] > 1) {
+                } elseif ($isDecreasing) {
                     $cart[$shoeId]['quantity'] -= 1;
                 }
+
                 session()->put('cart', $cart);
             }
         }
@@ -144,24 +178,26 @@ class CartController extends Controller
         return response()->json(['success' => true]);
     }
 
+    /**
+     * Importa los productos del carrito local (en sesión) al carrito del usuario autenticado en la base de datos.
+     *
+     * @return void
+     * @private
+     */
     private function importLocalCart()
     {
         $localCart = session()->get('cart', []);
 
         if (!empty($localCart)) {
             foreach ($localCart as $key => $item) {
-                // Verificar si el zapato existe en la base de datos antes de importarlo
                 $shoe = Shoe::find($key);
                 if ($shoe) {
-                    // Buscar si el usuario ya tiene este zapato en su carrito
                     $cartItem = Cart::where('user_id', auth()->id())->where('shoe_id', $shoe->id)->first();
 
                     if ($cartItem) {
-                        // Si el zapato ya está en el carrito, aumentar la cantidad
                         $cartItem->quantity += $item['quantity'];
                         $cartItem->save();
                     } else {
-                        // Si no existe en el carrito, agregarlo
                         Cart::create([
                             'user_id' => auth()->id(),
                             'shoe_id' => $shoe->id,
@@ -171,14 +207,8 @@ class CartController extends Controller
                 }
             }
 
-            // Eliminar el carrito local después de la importación
             session()->forget('cart');
-
-            // Mensaje de éxito en la sesión flash
             session()->flash('success', 'Se ha importado tu carrito local.');
         }
     }
-
-
-
 }
