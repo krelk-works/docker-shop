@@ -217,65 +217,67 @@ class CartController extends Controller
 
     // Checkout con Stripe
     public function checkout(Request $request)
-{
-    Stripe::setApiKey(env('STRIPE_SECRET'));
-
-    $cartItems = [];
-
-    if (auth()->check()) {
-        $cartItems = Cart::where('user_id', auth()->id())->with('shoe.brand', 'shoe.model')->get();
-    } else {
-        $sessionCart = session()->get('cart', []);
-        foreach ($sessionCart as $shoeId => $item) {
-            $cartItems[] = (object)[
-                'shoe' => (object)[
-                    'name' => $item['name'] ?? 'Producto sin nombre',
-                    'price' => $item['price'] ?? 0
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+        // Obtener los productos del carrito
+        $cartItems = [];
+    
+        if (auth()->check()) {
+            $cartItems = Cart::where('user_id', auth()->id())->with('shoe.brand', 'shoe.model')->get();
+        } else {
+            $sessionCart = session()->get('cart', []);
+            foreach ($sessionCart as $shoeId => $item) {
+                $cartItems[] = (object)[
+                    'shoe' => (object)[
+                        'name' => $item['name'] ?? 'Producto sin nombre',
+                        'price' => $item['price'] ?? 0
+                    ],
+                    'quantity' => $item['quantity'] ?? 1
+                ];
+            }
+        }
+    
+        if (empty($cartItems)) {
+            return redirect()->route('cart.index')->with('error', 'Tu carrito está vacío.');
+        }
+    
+        // Crear los items para la sesión de pago
+        $lineItems = [];
+        foreach ($cartItems as $item) {
+            $name = $item->shoe->name ?? 'Zapato desconocido';
+            $price = $item->shoe->price ?? 0;
+    
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $name,
+                    ],
+                    'unit_amount' => intval($price * 100), // en céntimos
                 ],
-                'quantity' => $item['quantity'] ?? 1
+                'quantity' => $item->quantity,
             ];
         }
-    }
-
-    if (empty($cartItems)) {
-        return redirect()->route('cart.index')->with('error', 'Tu carrito está vacío.');
-    }
-
-    $lineItems = [];
-
-    foreach ($cartItems as $item) {
-        // Validación segura
-        $name = $item->shoe->name ?? 'Zapato desconocido';
-        $price = $item->shoe->price ?? 0;
-
-        $lineItems[] = [
-            'price_data' => [
-                'currency' => 'eur',
-                'product_data' => [
-                    'name' => $name,
-                ],
-                'unit_amount' => intval($price * 100), // en céntimos
-            ],
-            'quantity' => $item->quantity,
-        ];
-    }
-
-    try {
-        $session = SessionStripe::create([
-            'payment_method_types' => ['card', 'paypal'],
-            'line_items' => $lineItems,
-            'mode' => 'payment',
-            'success_url' => route('payment.success'),
-            'cancel_url' => route('cart.index'),
-        ]);
     
-        return redirect($session->url);
-    } catch (\Exception $e) {
-        // Loguea el error y redirige con un mensaje
-        Log::error('Stripe error: ' . $e->getMessage());
-        return redirect()->route('cart.index')->with('error', 'Error al crear la sesión de pago: ' . $e->getMessage());
+        try {
+            // Crear la sesión de pago de Stripe con soporte para PayPal
+            $session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card', 'paypal'],
+                'line_items' => $lineItems,
+                'mode' => 'payment',
+                'success_url' => route('payment.success'),
+                'cancel_url' => route('cart.index'),
+            ]);
+        
+            return redirect($session->url);
+        } catch (\Exception $e) {
+            // Loguea el error y redirige con un mensaje
+            Log::error('Stripe error: ' . $e->getMessage());
+            return redirect()->route('cart.index')->with('error', 'Error al crear la sesión de pago: ' . $e->getMessage());
+        }
     }
-}
+    
 
 
 
