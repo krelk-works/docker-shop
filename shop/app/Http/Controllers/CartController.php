@@ -262,7 +262,7 @@ class CartController extends Controller
 
     try {
         $session = SessionStripe::create([
-            'payment_method_types' => ['card'],
+            'payment_method_types' => ['card', 'paypal'],
             'line_items' => $lineItems,
             'mode' => 'payment',
             'success_url' => route('payment.success'),
