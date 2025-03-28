@@ -11,11 +11,8 @@
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
-<<<<<<< HEAD
+        "phpdocumentor/shim": "^3.7",
         "stripe/stripe-php": "^16.6"
-=======
-        "phpdocumentor/shim": "^3.7"
->>>>>>> refs/remotes/origin/main
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
