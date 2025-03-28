@@ -214,7 +214,6 @@ class CartController extends Controller
             session()->flash('success', 'Se ha importado tu carrito local.');
         }
     }
-<<<<<<< HEAD
 
        // Checkout con Stripe
        public function checkout(Request $request)
@@ -258,6 +257,4 @@ class CartController extends Controller
 
 
 
-=======
->>>>>>> refs/remotes/origin/main
 }
