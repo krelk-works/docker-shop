@@ -245,7 +245,13 @@ class CartController extends Controller
         // Crear los items para la sesión de pago
         $lineItems = [];
         foreach ($cartItems as $item) {
-            $name = $item->shoe->name ?? 'Zapato desconocido';
+            $brand = $item->shoe->brand ?? null;
+            $model = $item->shoe->model ?? null;
+            if ($brand && $model) {
+                $name = "$brand->name $model->name";
+            } else {
+                $name = 'Zapato desconocido';
+            }
             $price = $item->shoe->price ?? 0;
     
             $lineItems[] = [
@@ -283,10 +289,32 @@ class CartController extends Controller
 
    
        // Página de éxito
+       
        public function success()
        {
            return view('cart.success');
        }
+    
+
+    /*
+    public function success(Request $request)
+{
+    // Si el usuario está autenticado, vaciar el carrito en la base de datos
+    if (auth()->check()) {
+        $userCart = Cart::where('user_id', auth()->id())->first();
+
+        // Eliminar todos los productos del carrito del usuario (de la tabla intermedia cart_shoe)
+        if ($userCart) {
+            $userCart->shoe()->detach();  // Elimina los productos asociados con el carrito
+        }
+    }
+
+    // Otras acciones que necesites (por ejemplo, marcar el pedido como pagado en la base de datos)
+    return view('cart.success');
+}
+
+       */
+
 
 
 
