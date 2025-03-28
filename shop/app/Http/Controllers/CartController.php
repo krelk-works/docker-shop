@@ -218,9 +218,17 @@ class CartController extends Controller
        // Checkout con Stripe
        public function checkout(Request $request)
        {
-           Stripe::setApiKey(env('STRIPE_SECRET'));
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $cart = null;
+
+            if (auth()->check()) {
+                $cart = Cart::where('user_id', auth()->id())->sum('quantity');
+            } else {
+                $cart_s = session()->get('cart', []);
+                $cart = array_sum(array_column($cart_s, 'quantity'));
+            }
    
-           $cart = Cart::where('user_id', auth()->id())->first();
+           // $cart = Cart::where('user_id', auth()->id())->first();
            $cartItems = $cart ? $cart->cartShoe : [];
    
            $lineItems = [];
