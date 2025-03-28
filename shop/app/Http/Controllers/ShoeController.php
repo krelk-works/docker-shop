@@ -191,19 +191,27 @@ class ShoeController extends Controller
 
         return redirect()->route('shoes.index')->with('success', 'Zapato actualizado con éxito.');
     }
-    
+
     public function stockChart()
     {
         $shoes = Shoe::with('model')->orderBy('stock', 'asc')->limit(5)->get();
         return response()->json($shoes);
     }
+
+    public function topSellingShoes()
+    {
+        $topShoes = Shoe::select('name')
+            ->withCount('carts') // Verifica que la relación esté bien
+            ->orderByDesc('carts_count')
+            ->limit(10)
+            ->get();
     
-
+        dd($topShoes); // Verifica qué datos obtiene
     
-
-
-
-
+        return view('administration.chart', compact('topShoes'));
+    }
+    
+    
 
 
 

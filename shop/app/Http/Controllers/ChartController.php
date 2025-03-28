@@ -23,6 +23,22 @@ class ChartController extends Controller
             "ventasMensuales" => $ventasMensuales
         ]);
     }
+
+    // Método en el controlador para obtener los productos más vendidos
+    public function getTopSellingProducts()
+    {
+        // Realizar una consulta para obtener los 10 productos más vendidos
+        $topSellingProducts = DB::table('order_items')
+                                ->join('shoes', 'order_items.shoe_id', '=', 'shoes.id')
+                                ->select('shoes.id', 'shoes.model_id', 'shoes.stock', 'shoes.model.name', DB::raw('SUM(order_items.quantity) as total_sales'))
+                                ->groupBy('shoes.id', 'shoes.model_id', 'shoes.stock', 'shoes.model.name')
+                                ->orderByDesc('total_sales')  // Ordenar por el total de ventas
+                                ->limit(10)  // Solo los 10 productos más vendidos
+                                ->get();
+
+        return response()->json($topSellingProducts);
+    }
+
 }
 
 

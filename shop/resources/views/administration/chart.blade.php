@@ -190,6 +190,49 @@
     });
 </script>
 
+<canvas id="topShoesChart" width="600" height="400"></canvas>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("topShoesChart").getContext("2d");
+
+        // Datos desde Laravel
+        const shoeNames = @json($topShoes->pluck('id_shoe'));
+        const salesCounts = @json($topShoes->pluck('cart_count'));
+
+        // Dibujar gráfico en Canvas puro
+        function drawChart(ctx, labels, values) {
+            const maxVal = Math.max(...values);
+            const barWidth = 40;
+            const spacing = 20;
+            const startX = 50;
+            const startY = 350;
+            const chartHeight = 300;
+            
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.font = "14px Arial";
+            ctx.textAlign = "center";
+
+            labels.forEach((label, i) => {
+                const barHeight = (values[i] / maxVal) * chartHeight;
+                const x = startX + i * (barWidth + spacing);
+                const y = startY - barHeight;
+
+                ctx.fillStyle = "#4CAF50";
+                ctx.fillRect(x, y, barWidth, barHeight);
+                ctx.fillStyle = "#000";
+                ctx.fillText(values[i], x + barWidth / 2, y - 5);
+                ctx.fillText(label, x + barWidth / 2, startY + 15);
+            });
+        }
+
+        drawChart(ctx, shoeNames, salesCounts);
+    });
+</script>
+
+
+
+
 
 
 

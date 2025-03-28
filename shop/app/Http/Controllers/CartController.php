@@ -8,6 +8,9 @@ use App\Models\Cart;
 use App\Models\Shoe;
 use Illuminate\Support\Facades\Session;
 
+use Stripe\Stripe;
+use Stripe\Checkout\Session as SessionStripe;
+
 class CartController extends Controller
 {
     // Mostrar carrito
@@ -178,6 +181,46 @@ class CartController extends Controller
             session()->flash('success', 'Se ha importado tu carrito local.');
         }
     }
+
+       // Checkout con Stripe
+       public function checkout(Request $request)
+       {
+           Stripe::setApiKey(env('STRIPE_SECRET'));
+   
+           $cart = Cart::where('user_id', auth()->id())->first();
+           $cartItems = $cart ? $cart->cartShoe : [];
+   
+           $lineItems = [];
+           foreach ($cartItems as $item) {
+               $lineItems[] = [
+                   'price_data' => [
+                       'currency' => 'eur',
+                       'product_data' => [
+                           'name' => $item->shoe->name,
+                       ],
+                       'unit_amount' => $item->shoe->price * 100,
+                   ],
+                   'quantity' => $item->quantity,
+               ];
+           }
+   
+           $session = StripeSession::create([
+               'payment_method_types' => ['card'],
+               'line_items' => $lineItems,
+               'mode' => 'payment',
+               'success_url' => route('payment.success'),
+               'cancel_url' => route('cart.index'),
+           ]);
+   
+           return redirect($session->url);
+       }
+   
+       // Página de éxito
+       public function success()
+       {
+           return view('cart.success');
+       }
+
 
 
 

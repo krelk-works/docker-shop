@@ -55,6 +55,11 @@ Route::get('/game', [GameController::class, 'index'])->name('game.index');
 //grafico stock
 Route::get('/api/stock-chart', [ShoeController::class, 'stockChart']);
 
+//grafico top products
+//Route::get('/top-selling-chart', [ChartController::class, 'topSellingChart']);
+
+Route::get('/top-selling-shoes', [ShoeController::class, 'topSellingShoes']);
+
 
 //grafico
 Route::get('/chart', function () {
@@ -100,6 +105,9 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->n
 Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::post('/cart/import', [CartController::class, 'importLocalCart'])->name('cart.import');
+Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::get('/payment/success', [CartController::class, 'success'])->name('payment.success');
+
 
 
 # Favoritos

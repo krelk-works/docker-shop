@@ -45,4 +45,11 @@ class Shoe extends Model
     {
         return $this->belongsTo(Size::class);
     }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class, 'cart_shoe', 'shoe_id', 'cart_id');
+    }
+    
+
 }
