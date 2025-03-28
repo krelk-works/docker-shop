@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Shoe;
-use Illuminate\Support\Facades\Session;
+//use Illuminate\Support\Facades\Session;
 
 use Stripe\Stripe;
 use Stripe\Checkout\Session as SessionStripe;
@@ -230,8 +230,9 @@ class CartController extends Controller
    
            // $cart = Cart::where('user_id', auth()->id())->first();
            $cartItems = $cart ? $cart->cartShoe : [];
-   
+       
            $lineItems = [];
+
            foreach ($cartItems as $item) {
                $lineItems[] = [
                    'price_data' => [
@@ -244,17 +245,20 @@ class CartController extends Controller
                    'quantity' => $item->quantity,
                ];
            }
-   
-           $session = StripeSession::create([
+       
+           // Crear la sesión de pago con Stripe
+           $session = StripeSession::create([ // Usé StripeSession aquí
                'payment_method_types' => ['card'],
                'line_items' => $lineItems,
                'mode' => 'payment',
                'success_url' => route('payment.success'),
                'cancel_url' => route('cart.index'),
            ]);
-   
+       
+           // Redirigir al usuario a la página de pago de Stripe
            return redirect($session->url);
        }
+
    
        // Página de éxito
        public function success()

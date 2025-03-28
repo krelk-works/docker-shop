@@ -75,7 +75,7 @@ Route::get('/charts-data', [ChartController::class, 'getChartData']);
 // Route::put('/shoe/{id}', [ShoeController::class, 'update'])->name('shoe.update');
 
 // Public shoes routes
-Route::get('/shoes/preview/{shoe}', [ShoeController::class, 'preview'])->name('shoes.preview');
+Route::match(['get', 'post'], '/shoes/preview/{shoe}', [ShoeController::class, 'preview'])->name('shoes.preview');
 Route::post('/shoes/search', [ShoeController::class, 'search'])->name('shoes.search');
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

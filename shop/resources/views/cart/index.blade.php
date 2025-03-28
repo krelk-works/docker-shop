@@ -132,7 +132,10 @@
                     <button class="btn btn-warning">Vaciar Carrito</button>
                 </form>
                 
-                <a href="" class="btn btn-success">Proceder al Pago</a>
+                <form action="{{ route('checkout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Pagar con Stripe</button>
+                </form>            
             </div>
         </div>
     @else
