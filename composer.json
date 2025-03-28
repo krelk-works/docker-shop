@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpdocumentor/shim": "^3.7",
+        "dragon-code/support": "^6.16"
+    }
+}
